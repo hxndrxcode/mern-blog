@@ -1,0 +1,26 @@
+svg {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.navbar .container {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+@media (min-width: 576px) { 
+    .navbar .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+@media (min-width: 992px) { 
+    .container {
+        max-width: 960px;
+    }
+    #sidebar {
+        display: block;
+        height: auto;
+        transition: none;
+    }
+}
