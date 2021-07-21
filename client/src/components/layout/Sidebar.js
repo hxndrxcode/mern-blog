@@ -4,12 +4,15 @@ import * as Icon from 'react-feather'
 import { RootContext } from '../../context/rootContext';
 
 const Sidebar = () => {
-  let { store } = useContext(RootContext)
+  const { store } = useContext(RootContext)
 
   return (
-    <div className="position-fixed" style={{zIndex: 2}}>
+    <div data-toggle="collapse" data-target="#sidebar" className="position-fixed" style={{zIndex: 2}}>
       <div className="collapse navbar-collapse mb-4" id="sidebar">
         <nav className="navbar navbar-light bg-light border">
+          <span className="ml-auto d-lg-none border">
+            <Icon.X />
+          </span>
           <ul className="navbar-nav w-100">
             <li className="nav-item">
               <NavLink to="/" exact={true} className="nav-link">

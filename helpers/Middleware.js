@@ -1,6 +1,17 @@
 const jwt = require('jsonwebtoken')
 
 class Middleware {
+    extender(req, res, next) {
+        req.getBody = arr => {
+            let data = {}
+            arr.map(v => {
+                data[v] = req.body[v]
+            })
+            return data
+        }
+        next()
+    }
+
     errorHandler(error, req, res, next) {
         if (error.message === '404') {
             res.status(404).send({

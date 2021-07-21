@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { errorHandler, handledBy, loggedIn, getToken } = require('./helpers/Middleware.js')
+const { errorHandler, handledBy, loggedIn, getToken, extender } = require('./helpers/Middleware.js')
 
+router.use(extender)
 router.use(getToken)
 
 const Auth = require('./controllers/AuthController.js')
@@ -18,6 +19,8 @@ router.get('/auth/user', handledBy(Auth.getUserData))
 router.get('/user', handledBy(User.list))
 
 router.get('/my/blog', handledBy(Blog.list))
+router.get('/my/blog/:id', handledBy(Blog.detail))
+router.post('/my/blog', handledBy(Blog.store))
 router.use(errorHandler)
 
 

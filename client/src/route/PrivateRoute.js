@@ -3,20 +3,12 @@ import { Route, Redirect } from 'react-router-dom';
 import { RootContext } from '../context/rootContext';
 
 const PrivateRoute = ({
-    component: Component
+    component: Component,
+    path
 }) => {
     const { store } = useContext(RootContext)
-
-    return (
-        <Route
-            render={props =>
-                store.authuser ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect to="/login" />
-                )
-            }
-        />
+    return !store.authuser ? (<Redirect to="/login" />) : (
+        <Route exact path={path} component={Component} />
     );
 }
 

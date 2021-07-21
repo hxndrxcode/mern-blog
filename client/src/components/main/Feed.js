@@ -1,6 +1,6 @@
 import React from "react";
 
-const Page = (props) => {
+const Page = props => {
   return (
   <div>
     <h3>Conveying meaning to assistive technologies</h3>

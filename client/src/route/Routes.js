@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Feed from "../components/main/Feed";
 import Blogs from "../components/main/Blogs";
 import Login from "../components/auth/Login";
@@ -9,6 +9,8 @@ import MyAccount from "../components/main/MyAccount";
 import PrivateRoute from './PrivateRoute';
 import { RootContext } from '../context/rootContext';
 import axios from 'axios';
+import CreateBlog from '../components/main/CreateBlog';
+import MyBlogArticle from '../components/myblog/MyBlogArticle';
 
 const Routes = props => {
   const { store, dispatch } = useContext(RootContext)
@@ -75,8 +77,11 @@ const Routes = props => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
 
-        <PrivateRoute path="/my-blog" component={MyBlog} />
-        <PrivateRoute path="/my-account" component={MyAccount} />
+        <Redirect exact from="/my-blog/:blogId" to="/my-blog/:blogId/article" />
+        <PrivateRoute exact path="/my-blog/:blogId/article" component={MyBlogArticle} />
+        <PrivateRoute exact path="/my-blog" component={MyBlog} />
+        <PrivateRoute exact path="/my-blog/create" component={CreateBlog} />
+        <PrivateRoute exact path="/my-account" component={MyAccount} />
         {/* <Route component={NotFound} /> */}
       </Switch>
     </div>
