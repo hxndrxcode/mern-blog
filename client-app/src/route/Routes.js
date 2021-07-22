@@ -36,7 +36,7 @@ const Routes = props => {
           isLoading: false
         })
       } else {
-        axios.get('http://localhost:3000/api/auth/user', store.authHeader)
+        axios.get(store.apiUrl + '/auth/user', store.authHeader)
           .then(({ data }) => {
             dispatch({
               type: 'set_user',

@@ -8,6 +8,8 @@ const RootProvider = ({ children }) => {
     authuser: null,
     authLoading: true,
     siteTitle: 'app.blogwf.com',
+    apiUrl: process.env.REACT_APP_API_URL,
+    lpUrl: process.env.REACT_APP_LP_URL,
     authHeader: {
       headers: { Authorization: 'Bearer ' + jwtToken }
     },

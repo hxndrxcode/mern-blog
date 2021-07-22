@@ -5,7 +5,7 @@ import { RootContext } from "../../context/rootContext"
 const ManageMyBlog = props => {
     const { store } = useContext(RootContext)
     const fetchBlogDetail = () => {
-        axios.get('http://localhost:3000/api/my/blog/' + props.parentState.blogId, store.authHeader)
+        axios.get(store.apiUrl + '/my/blog/' + props.parentState.blogId, store.authHeader)
             .then(res => {
                 props.parentSetState({
                     ...props.parentState,

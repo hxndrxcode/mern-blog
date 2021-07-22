@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import { RootContext } from "../../context/rootContext";
 import PageHeader from "../partial/PageHeader";
 
-
 const Page = () => {
+  const { store, dispatch } = useContext(RootContext)
   const [state, setState] = useState({
     username: '',
-    email: '',
-    fullname: '',
-    password: ''
+    password: '',
+    isLoading: true
   })
 
   const changeData = e => {
@@ -18,32 +19,38 @@ const Page = () => {
     })
   }
 
-  const submitRegister = () => {
+  const submitLogin = () => {
     let data = {
-      ...state
+      username: state.username,
+      password: state.password,
     }
-    axios.post('http://localhost:3000/api/auth/register', data).then(res => {
-      console.log(res.data)
+    axios.post(store.apiUrl + '/auth/login', data).then(res => {
+      dispatch({
+        type: 'set_token',
+        data: res.data.token
+      })
+      dispatch({
+        type: 'set_user',
+        data: res.data.user
+      })
     })
       .catch(err => {
         console.log(err)
       })
   }
 
+  if (store.authuser) {
+    return (
+      <Redirect to="/" />
+    )
+  }
+
   return (
     <React.Fragment>
-      <PageHeader title="Register" btnLink="/login" btnText="Login" btnArrow="left" />
+      <PageHeader title="Login" btnLink="/register" btnText="Register" btnArrow="right" />
       <div className="card">
         <div className="col-md-6 offset-md-3 px-0">
           <div className="card-body">
-            <div className="form-group">
-              <label>Full Name</label>
-              <input type="text" className="form-control" id="fullname" value={state['fullname']} onChange={changeData} />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input type="text" className="form-control" id="email" value={state['email']} onChange={changeData} />
-            </div>
             <div className="form-group">
               <label>Username</label>
               <input type="text" className="form-control" id="username" value={state['username']} onChange={changeData} />
@@ -52,7 +59,13 @@ const Page = () => {
               <label>Password</label>
               <input type="password" className="form-control" id="password" value={state['password']} onChange={changeData} />
             </div>
-            <button onClick={submitRegister} className="btn btn-primary mt-2 mb-3">Register</button>
+            <button onClick={submitLogin} className="btn btn-primary mt-2 mb-3">Login</button>
+            <div className="form-group">
+              <label>
+                Forgot Password? &nbsp;
+                <Link to="/forgot" className="">Reset Here</Link>
+              </label>
+            </div>
           </div>
         </div>
       </div>

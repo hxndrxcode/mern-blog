@@ -24,7 +24,7 @@ const CreateBlog = props => {
   }
   const submitForm = e => {
     e.preventDefault()
-    axios.post('http://localhost:3000/api/my/blog', state.form, store.authHeader)
+    axios.post(store.apiUrl + '/my/blog', state.form, store.authHeader)
       .then(res => {
         setState({
           ...state,

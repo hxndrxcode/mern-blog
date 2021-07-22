@@ -12,7 +12,7 @@ const Page = () => {
     })
 
     const fetchData = () => {
-        axios.get('http://localhost:3000/api/my/blog', store.authHeader)
+        axios.get(store.apiUrl + '/my/blog', store.authHeader)
             .then(({ data }) => {
                 setState({
                     ...state,

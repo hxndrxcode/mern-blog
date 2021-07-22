@@ -8,6 +8,11 @@ svg {
     padding-left: 0px;
     padding-right: 0px;
 }
+.sidebar-wrapper {
+    position: fixed;
+    z-index: 2;
+    margin-top: -19px;
+}
 @media (min-width: 576px) { 
     .navbar .container {
         padding-left: 15px;
@@ -22,5 +27,8 @@ svg {
         display: block;
         height: auto;
         transition: none;
+    }
+    .sidebar-wrapper {
+        margin-top: 0;
     }
 }
