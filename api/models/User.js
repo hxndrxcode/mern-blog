@@ -6,10 +6,15 @@ const Model = new Schema({
   password: String,
   email: String,
   fullname: String,
+  photo: String,
+  bio: String,
   is_verified: Boolean,
   blog_count: Number
 }, {
-  timestamps: true
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  }
 });
 
 // Compile model from schema

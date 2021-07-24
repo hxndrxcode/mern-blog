@@ -1,7 +1,7 @@
 const Blog = require('../models/Blog')
 
 class Controller {
-    async list(req, res) {
+    async myBlogList(req, res) {
         let data = await Blog.find({
             user_id: req.user.id
         })
@@ -10,7 +10,7 @@ class Controller {
         })
     }
 
-    async store(req, res) {
+    async myBlogStore(req, res) {
         let data = req.getBody([
             'domain',
             'title'
@@ -21,8 +21,21 @@ class Controller {
         return res.json(data)
     }
 
-    async detail(req, res) {
-        let data = await Blog.findById(req.params.id)
+    async myBlogDetail(req, res) {
+        let data = await Blog.findOne({
+            _id: req.params.id,
+            user_id: req.user.id
+        })
+        if (!data) {
+            throw Error(404)
+        }
+        return res.json({
+            data
+        })
+    }
+
+    async exploreBlog(req, res) {
+        let data = await Blog.find()
         return res.json({
             data
         })

@@ -1,7 +1,21 @@
 const jwt = require('jsonwebtoken')
+const Blog = require('../models/Blog')
 
 class Middleware {
     extender(req, res, next) {
+        let authHeader = req.get('Authorization') || ''
+        let token = authHeader.split(' ')
+        if (token[1]) {
+            req.authToken = token[1]
+        }
+
+        if (req.authToken && req.authToken !== 'undefined' && req.authToken !== 'null') {
+            let verify = jwt.verify(req.authToken, process.env.JWT_SECRET)
+            if (verify) {
+                req.user = verify
+            }
+        }
+
         req.getBody = arr => {
             let data = {}
             arr.map(v => {
@@ -9,6 +23,11 @@ class Middleware {
             })
             return data
         }
+
+        req.input = key => {
+            return req.method === 'GET' ? req.query[key] : req.body[key]
+        }
+
         next()
     }
 
@@ -29,27 +48,24 @@ class Middleware {
         }
     }
 
-    getToken(req, res, next) {
-        let authHeader = req.get('Authorization') || ''
-        let token = authHeader.split(' ')
-        if (token[1]) {
-            req.authToken = token[1]
+    loggedIn(req, res, next) {
+        if (!req.user) {
+            next(Error(401))
         }
 
         next()
     }
 
-    loggedIn(req, res, next) {
-        if (!req.authToken || req.authToken === 'undefined' || req.authToken === 'null') {
-            throw Error(401)
+    async checkAsset(req, res, next) {
+        let check = await Blog.findOne({
+            user_id: req.user.id,
+            _id: req.input('blog_id')
+        })
+        if (!check) {
+            next(Error(404))
         }
 
-        let verify = jwt.verify(req.authToken, process.env.JWT_SECRET)
-        if (!verify) {
-            throw Error(401)
-        }
-
-        req.user = verify
+        req.blog = check
         next()
     }
 

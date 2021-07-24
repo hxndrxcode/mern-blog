@@ -13,7 +13,7 @@ class Controller {
             throw Error(404)
         }
 
-        let verify = await hashVerify(req.body.password, user.password)
+        let verify = hashVerify(req.body.password, user.password)
         if (!verify) {
             throw Error(401)
         }
@@ -50,7 +50,7 @@ class Controller {
             })
         }
 
-        data.password = await hashMake(data.password)
+        data.password = hashMake(data.password)
         const user = new User(data)
         await user.save()
         return res.send({

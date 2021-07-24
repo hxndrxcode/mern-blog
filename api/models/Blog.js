@@ -5,9 +5,14 @@ const Model = new Schema({
   user_id: String,
   domain: String,
   title: String,
-  post_count: Number,
+  logo: String,
+  post_count: { type: Number, default: 0 },
+  follower_count: { type: Number, default: 0 },
 }, {
-    timestamps: true
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    }
 });
 
 // Compile model from schema
