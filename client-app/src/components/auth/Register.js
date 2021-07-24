@@ -34,7 +34,7 @@ const Page = () => {
 
   return (
     <React.Fragment>
-      <PageHeader title="Register" btnLink="/login" btnText="Login" btnArrow="left" />
+      <PageHeader title="Register" btnLink="/login" btnText="Login" />
       <div className="card">
         <div className="col-md-6 offset-md-3 px-0">
           <div className="card-body">

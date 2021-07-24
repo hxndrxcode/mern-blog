@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { RootContext } from "../../context/rootContext";
 import PageHeader from "../partial/PageHeader";
 import * as Icon from "react-feather"
+import { handleApiError } from "../../helper/Api";
 
 const Page = () => {
     const { store, dispatch } = useContext(RootContext)
@@ -12,24 +13,21 @@ const Page = () => {
     })
 
     const fetchData = () => {
-        axios.get(store.apiUrl + '/my/blog', store.authHeader)
+        axios.get(store.apiUrl + '/myblog', store.authHeader)
             .then(({ data }) => {
                 setState({
                     ...state,
                     listData: data.data
                 })
             })
-            .catch(({ response }) => {
-                if (response.status === 401) {
-                    dispatch({
-                        type: 'set_logout'
-                    })
-                }
+            .catch(err => {
+                handleApiError(err, store, dispatch)
             })
             .then(() => {
             })
     }
     useEffect(() => {
+        document.title = 'My Blog' + store.docTitle
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -48,8 +46,8 @@ const Page = () => {
                                 <div className="p-3 border">
                                     <h5>{v.title}</h5>
                                     <div className="mb-2">
-                                        <a href={"http://" + v.domain} target="_blank" rel="noreferrer noopener">
-                                            http://{v.domain}
+                                        <a href={v.domain} target="_blank" rel="noreferrer noopener">
+                                            {v.domain}
                                         </a>
                                     </div>
                                     <Link to={"/my-blog/" + v._id} className="btn btn-sm mr-2 btn-light">
@@ -58,7 +56,7 @@ const Page = () => {
                                     </Link>
                                     <Link to={"/blogs/view/" + v._id} className="btn btn-sm mr-2 btn-light">
                                         <Icon.Eye />
-                                        View
+                                        Profile
                                     </Link>
                                 </div>
                             </div>

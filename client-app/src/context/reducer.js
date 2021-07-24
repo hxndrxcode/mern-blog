@@ -1,4 +1,7 @@
 function reducer(store, action) {
+    if (typeof action === 'string') {
+        action = { type: action }
+    }
     console.log('reducer', action.type, action.data)
     switch (action.type) {
         case 'set_user':
@@ -22,6 +25,11 @@ function reducer(store, action) {
                 authHeader: {
                     headers: { Authorization: 'Bearer ' + action.data }
                 },
+            }
+        case 'set_doctitle':
+            return {
+                ...store,
+                docTitle: store.siteName + ' - ' + action.data
             }
         default:
             throw new Error()

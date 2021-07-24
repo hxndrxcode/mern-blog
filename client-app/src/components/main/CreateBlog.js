@@ -24,7 +24,7 @@ const CreateBlog = props => {
   }
   const submitForm = e => {
     e.preventDefault()
-    axios.post(store.apiUrl + '/my/blog', state.form, store.authHeader)
+    axios.post(store.apiUrl + '/myblog', state.form, store.authHeader)
       .then(res => {
         setState({
           ...state,
@@ -40,7 +40,7 @@ const CreateBlog = props => {
     <Redirect to="/my-blog" />
     ) : (
     <React.Fragment>
-      <PageHeader title="Create Blog" btnLink="/my-blog" btnText="My Blog" btnArrow="left" />
+      <PageHeader title="Create Blog" btnLink="/my-blog" btnText="My Blog" />
       <div className="card">
         <div className="card-body">
           <form onSubmit={submitForm} className="col-md-6 offset-md-3 px-0">

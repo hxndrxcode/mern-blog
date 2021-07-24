@@ -13,7 +13,7 @@ const Header = () => {
         <span className="mr-3 d-lg-none" type="button" data-toggle="collapse" data-target="#sidebar">
           <Icon.Menu />
         </span>
-        <Link to="/" className="navbar-brand mr-auto">{store.siteTitle}</Link>
+        <Link to="/" className="navbar-brand mr-auto">{store.siteName}</Link>
       </div>
     </nav>
   );

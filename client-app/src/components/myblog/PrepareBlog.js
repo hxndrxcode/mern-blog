@@ -1,14 +1,15 @@
 import axios from 'axios'
 import React, { useContext, useEffect } from "react"
 import { RootContext } from "../../context/rootContext"
+import Loading from '../partial/Loading'
 
-const ManageMyBlog = props => {
+const PrepareBlog = ({ parentState, parentSetState }) => {
     const { store } = useContext(RootContext)
     const fetchBlogDetail = () => {
-        axios.get(store.apiUrl + '/my/blog/' + props.parentState.blogId, store.authHeader)
+        axios.get(store.apiUrl + '/myblog/' + parentState.blogId, store.authHeader)
             .then(res => {
-                props.parentSetState({
-                    ...props.parentState,
+                parentSetState({
+                    ...parentState,
                     blogData: res.data.data,
                     loadingBlogData: false
                 })
@@ -21,7 +22,7 @@ const ManageMyBlog = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    return <div>Loading blog data...</div>
+    return <Loading />
 }
 
-export default ManageMyBlog
+export default PrepareBlog

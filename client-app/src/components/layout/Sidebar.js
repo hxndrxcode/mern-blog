@@ -59,7 +59,7 @@ const Sidebar = () => {
               <li className="nav-item">
                 <a href={store.lpUrl} className="nav-link">
                   <Icon.ArrowLeft className="mr-3" />
-                  Go to blogwf.com
+                  Go to {store.lpSiteName}
                 </a>
               </li>
               <div className="dropdown-divider d-lg-none"></div>

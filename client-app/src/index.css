@@ -13,6 +13,12 @@ svg {
     z-index: 2;
     margin-top: -19px;
 }
+.card-body {
+    padding: 1rem;
+}
+.btn-light {
+    border: 1px solid #ccc;
+}
 @media (min-width: 576px) { 
     .navbar .container {
         padding-left: 15px;
