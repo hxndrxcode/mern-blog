@@ -1,5 +1,7 @@
 const Post = require('../models/Post')
+const Blog = require('../models/Blog')
 const { postDate } = require('../helpers/Helper')
+const moment = require('moment')
 
 class Controller {
     async myPostList(req, res) {
@@ -22,14 +24,33 @@ class Controller {
             'title',
             'permalink',
             'body',
+            'published_at_date',
+            'published_at_time',
+            'is_published',
+            'publish_soon'
         ])
+
+        let published_at = Date.now()
+        if (!data.publish_soon) {
+            let concated = data.published_at_date + ' ' + data.published_at_time + ':00'
+            published_at = moment(concated).toDate()
+        }
         Object.assign(data, {
+            published_at,
             domain: req.blog.domain,
             created_by: req.user.id,
             updated_by: req.user.id
         })
 
-        await new Post(data).save()
+        let create = await new Post(data).save()
+        if (create) {
+            await Blog.updateOne({_id: req.blog._id}, {
+                $inc: {
+                    post_count: 1
+                }
+            })
+        }
+
         return res.json({
             success: true
         })

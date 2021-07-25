@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const Model = new Schema({
   user_id: String,
+  prefix: String,
   domain: String,
   title: String,
   logo: String,

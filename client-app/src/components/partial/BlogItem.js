@@ -7,11 +7,11 @@ const BlogItem = ({ data }) => {
     <React.Fragment>
       <div className="border p-3 mb-3">
         <img src={data.logo} alt="logo" className="float-right d-none d-sm-inline ml-2" />
-        <h5 className="mb-2">
+        <h6 className="mb-2">
           <Link to={`/blogs/${data._id}`}>
             {data.title}
           </Link>
-        </h5>
+        </h6>
         <p className="text-muted mb-2">
           <span>
             {data.domain}

@@ -40,6 +40,10 @@ class Middleware {
             res.status(401).send({
                 message: 'Unauthorized!'
             })
+        } else if (error.message === '403') {
+            res.status(403).send({
+                message: 'Forbidden!'
+            })
         } else {
             console.error(error)
             res.status(500).send({
@@ -62,7 +66,7 @@ class Middleware {
             _id: req.input('blog_id')
         })
         if (!check) {
-            next(Error(404))
+            next(Error(403))
         }
 
         req.blog = check

@@ -45,6 +45,10 @@ const MyBlogPost = props => {
           <div className="border p-3 mb-3" key={v._id}>
             <h6>{v.title}</h6>
             <p className="text-muted">
+              {!v.is_published ? (<u className="mr-3">
+                <Icon.Archive />
+                Draft
+              </u>) : ''}
               <span>
                 <Icon.Clock />
                 {v.formatted_date}

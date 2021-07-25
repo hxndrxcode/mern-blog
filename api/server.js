@@ -22,9 +22,13 @@ app.use(express.static('./public'))
 app.use('/api', require('./router'))
 
 app.use((req, res, next) => {
-    res.status(404).send({
-        message: 'Not Found!'
-    })
+    try {
+        res.status(404).send({
+            message: 'Not Found!'
+        })
+    } catch(e) {
+        next()
+    }
 })
 
 app.listen(port, () => {

@@ -6,11 +6,11 @@ const PostItem = ({ data }) => {
     <React.Fragment>
       <div className="border p-3 mb-3">
         <img src={data.thumbnail} alt="thumbnail" className="float-right d-none d-sm-inline ml-2" />
-        <h5 className="mb-2">
+        <h6 className="mb-2">
           <a href={`${data.domain}/post/${data.permalink}`}>
             {data.title}
           </a>
-        </h5>
+        </h6>
         <p className="text-muted mb-1">
           <span>
             <Icon.Clock />
