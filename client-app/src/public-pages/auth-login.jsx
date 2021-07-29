@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { RootContext } from "../../context/rootContext";
-import PageHeader from "../partial/PageHeader";
+import { RootContext } from "../context/rootContext";
+import PageHeader from "../partials/page-header";
 
-const Page = () => {
+const AuthLogin = () => {
   const { store, dispatch } = useContext(RootContext)
   const [state, setState] = useState({
     username: '',
@@ -73,4 +73,4 @@ const Page = () => {
   );
 }
 
-export default Page;
+export default AuthLogin;

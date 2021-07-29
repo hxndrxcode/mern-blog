@@ -1,18 +1,13 @@
-const Post = require('../models/Post')
-const Blog = require('../models/Blog')
+const Page = require('../models/Page')
 const { postDate, generatePermalink } = require('../helpers/Helper')
-const moment = require('moment')
 
 class Controller {
-    async myPostList(req, res) {
+    async myPageList(req, res) {
         let query = {
             blog_id: req.query.blog_id,
             is_deleted: false
         }
-        if (req.query.search) {
-            query.title = new RegExp(req.query.search, 'gi')
-        }
-        let data = await Post.find(query)
+        let data = await Page.find(query)
         data.forEach(v => {
             v.formatted_date = postDate(v.published_at)
         })
@@ -21,48 +16,31 @@ class Controller {
         })
     }
 
-    async myPostStore(req, res) {
+    async myPageStore(req, res) {
         let data = req.getBody([
             'blog_id',
             'title',
             'permalink',
             'body',
-            'published_at_date',
-            'published_at_time',
-            'is_published',
-            'publish_soon'
+            'is_published'
         ])
 
-        let published_at = Date.now()
-        if (!data.publish_soon) {
-            let concated = data.published_at_date + ' ' + data.published_at_time + ':00'
-            published_at = moment(concated).toDate()
-        }
         if (!data.permalink) {
             data.permalink = generatePermalink(data.title)
         }
         Object.assign(data, {
-            published_at,
             created_by: req.user.id,
             updated_by: req.user.id
         })
 
-        let create = await new Post(data).save()
-        if (create) {
-            await Blog.updateOne({_id: req.blog._id}, {
-                $inc: {
-                    post_count: 1
-                }
-            })
-        }
-
+        await new Page(data).save()
         return res.json({
             success: true
         })
     }
 
-    async myPostDetail(req, res) {
-        let data = await Post.findById(req.params.id)
+    async myPageDetail(req, res) {
+        let data = await Page.findById(req.params.id)
         if (!data) {
             throw Error(404)
         }
@@ -72,8 +50,8 @@ class Controller {
         })
     }
 
-    async myPostUpdate(req, res) {
-        let detail = await Post.findById(req.params.id)
+    async myPageUpdate(req, res) {
+        let detail = await Page.findById(req.params.id)
         if (!detail) {
             throw Error(404)
         }
@@ -82,6 +60,7 @@ class Controller {
             'title',
             'permalink',
             'body',
+            'is_published'
         ])
         Object.assign(detail, data)
         await detail.save()
@@ -91,33 +70,14 @@ class Controller {
         })
     }
 
-    async postFeed(req, res) {
-        let data = await Post.find({
-            is_published: true,
-            is_deleted: false,
-            published_at: {
-                $lt: Date.now()
-            }
-        })
-
-        data.forEach(v => {
-            v.thumbnail = 'https://via.placeholder.com/85'
-            v.formatted_date = postDate(v.published_at)
-        })
-
-        return res.json({
-            data
-        })
-    }
-
-    async myPostBulkAction(req, res) {
+    async myPageBulkAction(req, res) {
         let body = req.getBody([
             'action',
             'blog_id',
             'checked'
         ])
         if (body.action === 'delete') {
-            await Post.updateMany({
+            await Page.updateMany({
                 _id: {
                     $in: body.checked
                 }

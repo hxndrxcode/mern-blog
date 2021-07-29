@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { RootContext } from "../../context/rootContext";
 import axios from "axios";
 
-const CreateBlog = props => {
+const MyBlogSetting = props => {
   const { store } = useContext(RootContext)
   const [state, setState] = useState({
     form: {
@@ -81,4 +81,4 @@ const CreateBlog = props => {
   )
 }
 
-export default CreateBlog
+export default MyBlogSetting

@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RootContext } from "../../context/rootContext";
-import PageHeader from "../partial/PageHeader";
+import { RootContext } from "../context/rootContext";
+import PageHeader from "../partials/page-header";
 import * as Icon from "react-feather"
-import { handleApiError } from "../../helper/Api";
+import { handleApiError } from "../helper/Api";
 
-const Page = () => {
+const MyBlog = () => {
     const { store, dispatch } = useContext(RootContext)
     const [state, setState] = useState({
         listData: []
@@ -56,7 +56,7 @@ const Page = () => {
                                     </Link>
                                     <Link to={"/blogs/view/" + v._id} className="btn btn-sm mr-2 btn-light">
                                         <Icon.Eye />
-                                        Profile
+                                        View
                                     </Link>
                                 </div>
                             </div>
@@ -67,4 +67,4 @@ const Page = () => {
         </React.Fragment>
     );
 }
-export default Page;
+export default MyBlog;

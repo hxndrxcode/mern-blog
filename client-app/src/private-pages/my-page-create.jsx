@@ -2,12 +2,13 @@ import axios from "axios"
 import moment from 'moment'
 import React, { useContext, useEffect, useState } from "react"
 import { Redirect, useParams } from "react-router-dom"
-import { RootContext } from "../../context/rootContext"
-import PageHeader from "../partial/PageHeader"
+import { RootContext } from "../context/rootContext"
+import PageHeader from "../partials/page-header"
 
-const CreatePost = props => {
+const MyPageCreate
+ = props => {
   const { store } = useContext(RootContext)
-  document.title = 'Create Post' + store.docTitle
+  document.title = 'Create Page' + store.docTitle
   const { blogId } = useParams()
   const [state, setState] = useState({
     blogId,
@@ -40,7 +41,7 @@ const CreatePost = props => {
 
   const submitCreate = e => {
     e.preventDefault()
-    axios.post(store.apiUrl + '/mypost', state.form, store.authHeader)
+    axios.post(store.apiUrl + '/mypage', state.form, store.authHeader)
       .then(({ data }) => {
         setState({
           ...state,
@@ -50,21 +51,20 @@ const CreatePost = props => {
   }
 
   useEffect(() => {
-    // setTimeout(fetchPost, 500)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return state.isDone ? <Redirect to={props.match.url.replace('/create', '')} /> : (
     <React.Fragment>
-      <PageHeader title="Create Post" btnLink={`/my-blog/${blogId}/post`} btnText="Post" />
+      <PageHeader title="Create Page" btnLink={`/my-blog/${blogId}/page`} btnText="Page" />
       <form onSubmit={submitCreate}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
-          <input type="text" className="form-control" id="title" value={state.form.title} onChange={changes} placeholder="Post title" />
+          <input type="text" className="form-control" id="title" value={state.form.title} onChange={changes} placeholder="Page title" />
         </div>
         <div className="form-group">
           <label htmlFor="body">Body</label>
-          <textarea className="form-control" id="body" value={state.form.body} onChange={changes} rows="10" placeholder="Post body"></textarea>
+          <textarea className="form-control" id="body" value={state.form.body} onChange={changes} rows="10" placeholder="Page body"></textarea>
         </div>
         <div className="">
           <button type="button" className="btn btn-light dropdown-toggle" data-toggle="collapse" data-target="#card-advanced">
@@ -89,19 +89,6 @@ const CreatePost = props => {
                   </select>
                 </div>
               </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label htmlFor="publish_soon">Schedule</label>
-                  <select id="publish_soon" value={state.form.publish_soon} onChange={changes} className="form-control">
-                    <option value="true">Publish immediately</option>
-                    <option value="false">Set schedule</option>
-                  </select>
-                  {state.form.publish_soon === false ? (<div className="input-group mt-2">
-                    <input type="date" id="published_at_date" value={state.form.published_at_date} onChange={changes} className="form-control" />
-                    <input type="time" id="published_at_time" value={state.form.published_at_time} onChange={changes} className="form-control" />
-                  </div>) : ''}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -111,4 +98,4 @@ const CreatePost = props => {
   )
 }
 
-export default CreatePost
+export default MyPageCreate

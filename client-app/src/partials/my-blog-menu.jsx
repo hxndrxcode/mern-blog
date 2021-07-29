@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 // import * as Icon from "react-feather"
 
-const DropdownMenu = props => {
+const MyBlogMenu = props => {
     const linkList = [
         { path: 'post', text: 'Post' },
         { path: 'comment', text: 'Comment' },
@@ -31,4 +31,4 @@ const DropdownMenu = props => {
     )
 }
 
-export default DropdownMenu
+export default MyBlogMenu

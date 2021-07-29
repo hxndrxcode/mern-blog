@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RootContext } from "../../context/rootContext";
-import { handleApiError } from "../../helper/Api";
-import PageHeader from "../partial/PageHeader";
-import PostItem from "../partial/PostItem";
+import { RootContext } from "../context/rootContext";
+import { handleApiError } from "../helper/Api";
+import PageHeader from "../partials/page-header";
+import PostItem from "../partials/post-item";
 import * as Icon from "react-feather"
 
 const Feed = props => {

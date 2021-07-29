@@ -6,10 +6,8 @@ const Model = new Schema({
   title: String,
   permalink: String,
   body: String,
-  thumbnail: String,
   is_published: { type: Boolean, default: true },
   is_deleted: { type: Boolean, default: false },
-  comment_count: { type: Number, default: 0 },
   published_at: { type: Date, default: Date.now() },
   created_by: String,
   updated_by: String,
@@ -24,4 +22,4 @@ const Model = new Schema({
 });
 
 // Compile model from schema
-module.exports = mongoose.model('Post', Model)
+module.exports = mongoose.model('Page', Model)

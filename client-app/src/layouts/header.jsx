@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import * as Icon from 'react-feather'
-import { RootContext } from '../../context/rootContext';
+import { RootContext } from '../context/rootContext';
 // import axios from 'axios';
 
 const Header = () => {

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import PageHeader from "../partial/PageHeader";
-import { RootContext } from "../../context/rootContext";
+import PageHeader from "../partials/page-header";
+import { RootContext } from "../context/rootContext";
 import axios from "axios";
-import { handleApiError } from "../../helper/Api";
-import BlogItem from "../partial/BlogItem";
+import { handleApiError } from "../helper/Api";
+import BlogItem from "../partials/blog-item";
 
 const Blogs = props => {
   const { store, dispatch } = useContext(RootContext)

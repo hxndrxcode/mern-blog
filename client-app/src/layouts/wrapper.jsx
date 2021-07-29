@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { RootContext } from '../../context/rootContext';
-import Loading from '../partial/Loading';
+import { RootContext } from '../context/rootContext';
+import Loading from '../partials/loading';
 // import axios from 'axios';
 
 const Wrapper = ({ children }) => {

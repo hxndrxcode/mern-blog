@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import * as Icon from 'react-feather'
-import { RootContext } from '../../context/rootContext';
+import { RootContext } from '../context/rootContext';
 
 const Sidebar = () => {
   const { store } = useContext(RootContext)

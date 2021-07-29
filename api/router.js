@@ -8,6 +8,8 @@ const Auth = require('./controllers/AuthController.js')
 const User = require('./controllers/UserController.js')
 const Blog = require('./controllers/BlogController.js')
 const Post = require('./controllers/PostController.js')
+const Page = require('./controllers/PageController.js')
+const Comment = require('./controllers/CommentController.js')
 
 
 router.post('/auth/login', handledBy(Auth.login))
@@ -33,6 +35,17 @@ router.get('/mypost', handledBy(Post.myPostList))
 router.get('/mypost/:id', handledBy(Post.myPostDetail))
 router.post('/mypost', handledBy(Post.myPostStore))
 router.put('/mypost/:id', handledBy(Post.myPostUpdate))
+router.post('/mypost/bulkaction', handledBy(Post.myPostBulkAction))
+
+router.get('/mypage', handledBy(Page.myPageList))
+router.get('/mypage/:id', handledBy(Page.myPageDetail))
+router.post('/mypage', handledBy(Page.myPageStore))
+router.put('/mypage/:id', handledBy(Page.myPageUpdate))
+router.post('/mypage/bulkaction', handledBy(Page.myPageBulkAction))
+
+router.get('/mycomment', handledBy(Comment.myCommentList))
+router.get('/mycomment/:id', handledBy(Comment.myCommentDetail))
+router.post('/mycomment/bulkaction', handledBy(Comment.myCommentBulkAction))
 
 router.use(errorHandler)
 

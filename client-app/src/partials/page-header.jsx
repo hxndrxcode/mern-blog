@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import * as Icon from 'react-feather'
 import { Link } from "react-router-dom"
-import { RootContext } from "../../context/rootContext"
+import { RootContext } from "../context/rootContext"
 
 const PageHeader = ({ title, btnLink, btnText, btnArrow, children, btnLogout }) => {
     const { dispatch } = useContext(RootContext)

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { RootContext } from "../../context/rootContext";
-import PageHeader from "../partial/PageHeader";
+import { RootContext } from "../context/rootContext";
+import PageHeader from "../partials/page-header";
 import { useState } from "react";
 import axios from "axios";
-import { handleApiError } from "../../helper/Api";
+import { handleApiError } from "../helper/Api";
 import { Redirect } from "react-router-dom";
 
-const Page = () => {
+const MyAccount = () => {
   const { store, dispatch } = useContext(RootContext)
   const [state, setState] = useState({
     form: {
@@ -86,4 +86,4 @@ const Page = () => {
     </React.Fragment>
   );
 }
-export default Page;
+export default MyAccount;
