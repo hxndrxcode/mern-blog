@@ -3,12 +3,16 @@ const Schema = mongoose.Schema;
 
 const Model = new Schema({
   user_id: String,
-  prefix: String,
+  scheme: String,
+  subdomain: String,
   domain: String,
+  hostname: String,
   title: String,
+  tagline: String,
   logo: String,
   post_count: { type: Number, default: 0 },
   follower_count: { type: Number, default: 0 },
+  meta_tags: Array
 }, {
     timestamps: {
       createdAt: 'created_at',

@@ -13,22 +13,52 @@ class Controller {
 
     async myBlogStore(req, res) {
         let data = req.getBody([
+            'scheme',
+            'subdomain',
             'domain',
             'domain_type',
-            'is_https',
             'title'
         ])
         if (data.domain_type === 'subdomain') {
-            data.prefix = data.domain
-            data.domain = 'https://' + data.domain + '.blogwi.com'
+            data.domain = ''
+            data.hostname = data.scheme + data.subdomain + '.blogwi.com'
         } else {
-            data.prefix = data.domain.replace(/\./g, '')
-            data.domain = (data.is_https ? 'https://' : 'http://') + data.domain
+            data.subdomain = data.domain.replace(/\./g, '')
+            data.hostname = data.scheme + data.domain
         }
         data.user_id = req.user.id
 
         await new Blog(data).save()
         return res.json(data)
+    }
+
+    async myBlogUpdate(req, res) {
+        let blog = await Blog.findOne({
+            _id: req.params.id,
+            user_id: req.user.id
+        })
+        if (!blog) {
+            throw Error(404)
+        }
+
+        let body = []
+        if (req.params.section === 'general') {
+            body = req.getBody(['title', 'tagline', 'logo'])
+        }
+        if (req.params.section === 'domain') {
+            body = req.getBody(['scheme', 'subdomain', 'domain'])
+            if (body.domain) {
+                body.hostname = body.scheme + body.domain
+            } else {
+                body.hostname = 'https://' + body.subdomain + '.blogwi.com'
+            }
+        }
+
+        Object.assign(blog, body)
+        await blog.save()
+        return res.json({
+            success: true
+        })
     }
 
     async myBlogDetail(req, res) {
@@ -55,6 +85,17 @@ class Controller {
         }
 
         let data = await Blog.find(query)
+        return res.json({
+            data
+        })
+    }
+
+    async exploreblogDetail(req, res) {
+        let id = req.params.id
+        let data = await Blog.findById(id)
+        if (!data) {
+            throw Error(404)
+        }
         return res.json({
             data
         })

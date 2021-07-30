@@ -3,9 +3,7 @@ const Schema = mongoose.Schema;
 
 const Model = new Schema({
   user_id: String,
-  username: String,
-  blog_id: String,
-  blog_domain: String
+  blog_id: String
 }, {
   timestamps: {
     createdAt: 'created_at',

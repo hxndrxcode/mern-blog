@@ -46,8 +46,8 @@ const MyBlog = () => {
                                 <div className="p-3 border">
                                     <h5>{v.title}</h5>
                                     <div className="mb-2">
-                                        <a href={v.domain} target="_blank" rel="noreferrer noopener">
-                                            {v.domain}
+                                        <a href={v.hostname} target="_blank" rel="noreferrer noopener">
+                                            {v.hostname}
                                         </a>
                                     </div>
                                     <Link to={"/my-blog/" + v._id} className="btn btn-sm mr-2 btn-light">

@@ -17,6 +17,7 @@ router.post('/auth/register', handledBy(Auth.register))
 
 router.get('/postfeed', handledBy(Post.postFeed))
 router.get('/exploreblog', handledBy(Blog.exploreBlog))
+router.get('/exploreblog/:id', handledBy(Blog.exploreblogDetail))
 
 router.use(loggedIn)
 
@@ -28,6 +29,7 @@ router.put('/profile', handledBy(User.updateProfile))
 router.get('/myblog', handledBy(Blog.myBlogList))
 router.get('/myblog/:id', handledBy(Blog.myBlogDetail))
 router.post('/myblog', handledBy(Blog.myBlogStore))
+router.put('/myblog/:id/:section', handledBy(Blog.myBlogUpdate))
 
 router.use(checkAsset)
 

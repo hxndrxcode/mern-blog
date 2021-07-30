@@ -8,7 +8,7 @@ import AuthRegister from "../public-pages/auth-register";
 
 import MyBlog from "../private-pages/my-blog";
 import MyAccount from "../private-pages/my-account";
-import MyBlogCreate from '../private-pages/my-post-create';
+import MyBlogCreate from '../private-pages/my-blog-create';
 import MyPost from '../private-pages/my-post';
 import MyPostCreate from '../private-pages/my-post-create';
 import MyPostEdit from '../private-pages/my-post-edit';
@@ -16,6 +16,7 @@ import MyComment from '../private-pages/my-comment';
 import MyPage from '../private-pages/my-page';
 import MyPageCreate from '../private-pages/my-page-create';
 import MyPageEdit from '../private-pages/my-page-edit';
+import MyBlogSetting from '../private-pages/my-blog-setting';
 
 const Routes = props => {
   return (
@@ -30,6 +31,7 @@ const Routes = props => {
 
         <PrivateRoute exact path="/my-blog" component={MyBlog} />
         <PrivateRoute exact path="/my-blog/create" component={MyBlogCreate} />
+        <PrivateRoute exact path="/my-blog/:blogId/setting" component={MyBlogSetting} />
         <Redirect exact from="/my-blog/:blogId" to="/my-blog/:blogId/post" />
 
         <PrivateRoute exact path="/my-blog/:blogId/post" component={MyPost} />

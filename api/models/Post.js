@@ -15,7 +15,8 @@ const Model = new Schema({
   updated_by: String,
   deleted_by: String,
   deleted_at: Date,
-  formatted_date: String
+  formatted_date: String,
+  blog: Object
 }, {
   timestamps: {
     createdAt: 'created_at',
