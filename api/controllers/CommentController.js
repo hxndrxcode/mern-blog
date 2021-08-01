@@ -4,23 +4,24 @@ const { postDate } = require('../helpers/Helper')
 
 class Controller {
     async myCommentList(req, res) {
-        // let x = new Comment({
-        //     blog_id: '60f83876585d3500dd4872f3',
-        //     post_id: '60fb2e46046bfc243dce48d8',
-        //     comment: 'Wow keren banget tutorialnya gan! Jangan lupa kunjungan baliknya.',
-        //     created_by: req.user.id,
-        //     updated_by: req.user.id,
-        //     is_hidden: false,
-        //     formatted_date: ''
-        // })
-        // await x.save()
+        let postId = []
+        if (req.query.search) {
+            let findPost = await Post.find({
+                title: new RegExp(req.query.search, 'gi')
+            }, { _id: 1})
+            postId = findPost.map(v => v._id)
+            if (postId.length === 0) {
+                return res.done(200, 'Success', [])
+            }
+        }
 
         let query = {
             blog_id: req.query.blog_id
         }
-        if (req.query.post_id) {
-            query.post_id = req.query.post_id
+        if (postId.length > 0) {
+            query.post_id = { $in: postId }
         }
+
         let data = await Comment.find(query)
         let post = await Post.find({
             _id: { $in: data.map(v => v.post_id) }
@@ -30,13 +31,22 @@ class Controller {
 
         data.forEach(v => {
             v.formatted_date = postDate(v.created_at)
-            v.post = post.find(w => String(w._id) === v.post_id)
+            let postt = post.find(w => String(w._id) === String(v.post_id))
+            v.post = {
+                title: postt.title,
+                permalink: postt.permalink
+            }
+            v.blog = {
+                hostname: req.blog.hostname
+            }
         })
 
-        return res.json({
-            data
+        return res.done(200, 'Success', {
+            comments: data,
+            blog: req.blog
         })
     }
+
     async myCommentBulkAction(req, res) {
         let body = req.getBody([
             'action',

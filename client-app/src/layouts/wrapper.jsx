@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { RootContext } from '../context/rootContext';
 import Loading from '../partials/loading';
+import Toast from '../partials/toast';
 // import axios from 'axios';
 
 const Wrapper = ({ children }) => {
@@ -51,9 +52,13 @@ const Wrapper = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return state.isLoading ? <Loading /> : (
-    <React.Fragment>{children}</React.Fragment>
-  )
+  return state.isLoading ? <Loading /> :
+    (
+      <React.Fragment>
+        {children}
+        {store.alert ? <Toast /> : ''}
+      </React.Fragment>
+    )
 }
 
 export default Wrapper

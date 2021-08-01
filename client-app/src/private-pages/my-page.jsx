@@ -14,6 +14,7 @@ const MyPage = props => {
   const { blogId } = useParams()
   const [state, setState] = useState({
     blogId,
+    blogData: {},
     listData: [],
     checked: [],
     search: ''
@@ -38,7 +39,8 @@ const MyPage = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data
+          listData: data.data.pages,
+          blogData: data.data.blog
         })
       })
   }
@@ -75,9 +77,9 @@ const MyPage = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.search])
 
-  return (
+  return !state.blogData.title ? '' : (
     <React.Fragment>
-      <PageHeader title="Page" btnLink="/my-blog" btnText="My Blog" btnArrow="left">
+      <PageHeader title={state.blogData.title}>
         <MyBlogMenu blogId={blogId} path="page" />
       </PageHeader>
       <div className="mb-3">

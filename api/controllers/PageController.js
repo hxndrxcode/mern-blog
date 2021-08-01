@@ -11,8 +11,10 @@ class Controller {
         data.forEach(v => {
             v.formatted_date = postDate(v.published_at)
         })
-        return res.json({
-            data
+
+        return res.done(200, 'Success', {
+            pages: data,
+            blog: req.blog
         })
     }
 

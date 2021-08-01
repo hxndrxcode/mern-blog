@@ -3,8 +3,11 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import { RootContext } from "../context/rootContext";
 import PageHeader from "../partials/page-header";
+import { handleApiError } from "../helper/Api";
+import { toast } from 'react-toast'
 
 const AuthLogin = () => {
+  toast.success('hallo')
   const { store, dispatch } = useContext(RootContext)
   const [state, setState] = useState({
     username: '',
@@ -20,23 +23,23 @@ const AuthLogin = () => {
   }
 
   const submitLogin = () => {
+    
     let data = {
       username: state.username,
       password: state.password,
     }
-    axios.post(store.apiUrl + '/auth/login', data).then(res => {
-      dispatch({
-        type: 'set_token',
-        data: res.data.token
+    axios.post(store.apiUrl + '/auth/login', data)
+      .then(res => {
+        dispatch({
+          type: 'set_token',
+          data: res.data.token
+        })
+        dispatch({
+          type: 'set_user',
+          data: res.data.user
+        })
       })
-      dispatch({
-        type: 'set_user',
-        data: res.data.user
-      })
-    })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(e => handleApiError(e, store, dispatch))
   }
 
   if (store.authuser) {

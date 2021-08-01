@@ -7,6 +7,7 @@ import * as Icon from "react-feather"
 import BulkAction from "../partials/bulk-action"
 import { handleApiError } from "../helper/Api"
 import MyBlogMenu from "../partials/my-blog-menu"
+// import MyBlogTab from "../partials/my-blog-tab"
 
 const MyPost = props => {
   const { store, dispatch } = useContext(RootContext)
@@ -14,6 +15,7 @@ const MyPost = props => {
   const { blogId } = useParams()
   const [state, setState] = useState({
     blogId,
+    blogData: {},
     listData: [],
     checked: [],
     search: ''
@@ -46,7 +48,8 @@ const MyPost = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data
+          listData: data.data.posts,
+          blogData: data.data.blog
         })
       })
   }
@@ -83,9 +86,9 @@ const MyPost = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.search])
 
-  return (
+  return !state.blogData.title ? '' : (
     <React.Fragment>
-      <PageHeader title="Post" btnLink="/my-blog" btnText="My Blog" btnArrow="left">
+      <PageHeader title={state.blogData.title}>
         <MyBlogMenu blogId={blogId} path="post" />
       </PageHeader>
       <div className="mb-3">
@@ -121,10 +124,9 @@ const MyPost = props => {
               <Icon.Edit />
               Edit
             </Link>
-            <Link to={"/blogs/view/" + v._id} className="btn btn-sm mr-2 btn-light">
-              <Icon.ExternalLink />
-              Visit
-            </Link>
+            <a href={`${v.blog.hostname}/post/${v.permalink}`} target="_blank" rel="noreferrer noopener" className="btn btn-sm btn-light">
+              <Icon.ExternalLink /> Visit
+            </a>
           </div>
         )
       })}

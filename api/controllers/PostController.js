@@ -12,12 +12,17 @@ class Controller {
         if (req.query.search) {
             query.title = new RegExp(req.query.search, 'gi')
         }
-        let data = await Post.find(query)
-        data.forEach(v => {
+        let posts = await Post.find(query)
+        posts.forEach(v => {
             v.formatted_date = postDate(v.published_at)
+            v.blog = {
+                hostname: req.blog.hostname
+            }
         })
-        return res.json({
-            data
+
+        return res.done(200, 'Success', {
+            posts,
+            blog: req.blog
         })
     }
 
@@ -30,7 +35,8 @@ class Controller {
             'published_at_date',
             'published_at_time',
             'is_published',
-            'publish_soon'
+            'publish_soon',
+            'labels'
         ])
 
         let published_at = Date.now()
@@ -82,6 +88,7 @@ class Controller {
             'title',
             'permalink',
             'body',
+            'labels'
         ])
         Object.assign(detail, data)
         await detail.save()

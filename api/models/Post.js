@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Model = new Schema({
-  blog_id: String,
+  blog_id: Schema.Types.ObjectId,
   title: String,
   permalink: String,
   body: String,
@@ -11,6 +11,7 @@ const Model = new Schema({
   is_deleted: { type: Boolean, default: false },
   comment_count: { type: Number, default: 0 },
   published_at: { type: Date, default: Date.now() },
+  labels: Array,
   created_by: String,
   updated_by: String,
   deleted_by: String,

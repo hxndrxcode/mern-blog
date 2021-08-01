@@ -8,10 +8,7 @@ const MyBlogCreate = props => {
   const { store } = useContext(RootContext)
   const [state, setState] = useState({
     form: {
-      scheme: 'http://',
       subdomain: '',
-      domain: '',
-      domain_type: 'subdomain',
       title: ''
     },
     isComplete: false
@@ -49,31 +46,14 @@ const MyBlogCreate = props => {
         <div className="card-body">
           <form onSubmit={submitForm} className="col-md-6 offset-md-3 px-0">
             <div className="form-group">
-              <label>Domain</label>
-              <select value={state.form.domain_type} onChange={changes} id="domain_type" className="form-control mb-2">
-                <option value="subdomain">Subdomain</option>
-                <option value="domain">My own domain</option>
-              </select>
-              {state.form.domain_type === 'subdomain' ? (
-                <div className="input-group mb-2">
-                  <input type="text" id="subdomain" value={state.form.subdomain} onChange={changes}
-                    placeholder="subdomain" className="form-control" />
-                  <div className="input-group-append">
-                    <span className="input-group-text">.blogwi.com</span>
-                  </div>
+              <label>Subdomain</label>
+              <div className="input-group">
+                <input type="text" id="subdomain" value={state.form.subdomain} onChange={changes}
+                  placeholder="" className="form-control" />
+                <div className="input-group-append">
+                  <span className="input-group-text">.blogwi.com</span>
                 </div>
-              ) : (
-                <div className="input-group mb-2">
-                  <div className="input-group-prepend">
-                    <select value={state.form.scheme} className="form-control" onChange={changes}>
-                      <option value="http://">http://</option>
-                      <option value="https://">https://</option>
-                    </select>
-                  </div>
-                  <input type="text" id="subdomain" value={state.form.subdomain} onChange={changes}
-                    placeholder="www.yourdomain.com" className="form-control" />
-                </div>
-              )}
+              </div>
             </div>
             <div className="form-group">
               <label>Blog Title</label>

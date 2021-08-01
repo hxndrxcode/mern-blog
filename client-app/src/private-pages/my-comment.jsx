@@ -13,16 +13,18 @@ const MyComment = props => {
   const { blogId } = useParams()
   const [state, setState] = useState({
     blogId,
+    blogData: {},
     listData: [],
-    postId: ''
+    search: ''
   })
 
   const fetchData = () => {
-    axios.get(`${store.apiUrl}/mycomment?blog_id=${state.blogId}&postId=${state.postId}`, store.authHeader)
+    axios.get(`${store.apiUrl}/mycomment?blog_id=${state.blogId}&search=${state.search}`, store.authHeader)
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data
+          listData: data.data.comments,
+          blogData: data.data.blog
         })
       })
   }
@@ -40,16 +42,27 @@ const MyComment = props => {
       .catch(e => handleApiError(e, store, dispatch))
   }
 
+  const keySearch = e => {
+    if (e.code !== 'Enter') return false;
+    setState({
+      ...state,
+      search: e.target.value
+    })
+  }
+
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.search])
 
-  return (
+  return !state.blogData.title ? '' : (
     <React.Fragment>
-      <PageHeader title="Comment" btnLink="/my-blog" btnText="My Blog" btnArrow="left">
+      <PageHeader title={state.blogData.title}>
         <MyBlogMenu blogId={blogId} path="comment" />
       </PageHeader>
+      <div className="mb-3">
+        <input type="text" onKeyUp={keySearch} className="form-control" placeholder="Search" />
+      </div>
       {state.listData.map(v => {
         return (
           <div className="border p-3 mb-3" key={v._id}>
@@ -75,6 +88,9 @@ const MyComment = props => {
                 <Icon.EyeOff /> Hide
               </button>
             )}
+            <a href={`${v.blog.hostname}/post/${v.post.permalink}/comment`} target="_blank" rel="noreferrer noopener" className="btn btn-sm btn-light">
+              <Icon.ExternalLink /> Visit
+            </a>
           </div>
         )
       })}

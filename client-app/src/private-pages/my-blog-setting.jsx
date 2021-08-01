@@ -8,9 +8,11 @@ import MyBlogMenu from "../partials/my-blog-menu";
 
 const MyBlogSetting = props => {
   const { store, dispatch } = useContext(RootContext)
+  document.title = 'Setting' + store.docTitle
   const { blogId } = useParams()
   const [state, setState] = useState({
     blogId,
+    blogData: {},
     form: {
       domain: '',
       subdomain: '',
@@ -18,10 +20,10 @@ const MyBlogSetting = props => {
       title: '',
       tagline: '',
       logo: '',
+      meta_tags: []
     },
     backupLogo: '',
     isLogoUploaded: false,
-    isComplete: false,
     update: 0
   })
 
@@ -32,7 +34,8 @@ const MyBlogSetting = props => {
         setState({
           ...state,
           form,
-          backupLogo: form.logo
+          backupLogo: form.logo,
+          blogData: res.data.data
         })
       })
   }
@@ -46,6 +49,40 @@ const MyBlogSetting = props => {
     setState({
       ...state,
       form
+    })
+  }
+
+  const changeMeta = e => {
+    let form = state.form
+    let id = e.target.id.split('-')
+    form.meta_tags[id[1]][id[0]] = e.target.value
+    setState({
+      ...state,
+      form
+    })
+  }
+
+  const addMeta = e => {
+    let meta_tags = state.form.meta_tags
+    meta_tags.push({ name: '', content: '' })
+    setState({
+      ...state,
+      form: {
+        ...state.form,
+        meta_tags
+      }
+    })
+  }
+
+  const removeMeta = e => {
+    let meta_tags = state.form.meta_tags
+    meta_tags.splice(e.target.dataset.index, 1)
+    setState({
+      ...state,
+      form: {
+        ...state.form,
+        meta_tags
+      }
     })
   }
 
@@ -91,7 +128,6 @@ const MyBlogSetting = props => {
       .then(res => {
         setState({
           ...state,
-          isComplete: true,
           update: Date.now(),
           isLogoUploaded: false
         })
@@ -103,9 +139,9 @@ const MyBlogSetting = props => {
     fetchBlog()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.update])
-  return (
+  return !state.blogData.title ? '' : (
     <React.Fragment>
-      <PageHeader title="Setting" btnLink="/my-blog" btnText="My Blog">
+      <PageHeader title={state.blogData.title}>
         <MyBlogMenu blogId={blogId} path="setting" />
       </PageHeader>
       <h5>General</h5>
@@ -124,7 +160,7 @@ const MyBlogSetting = props => {
               <label>Logo</label>
               <div className="d-flex">
                 <img src={state.form.logo} alt="logo" className="mr-3" />
-                <div>
+                <div className="w-100">
                   {state.isLogoUploaded ? (
                     <button type="button" onClick={resetUpload} className="btn btn-light btn-sm">Revert Logo</button>
                   ) : (
@@ -139,7 +175,7 @@ const MyBlogSetting = props => {
         </div>
       </div>
       <h5>Domain</h5>
-      <div className="card">
+      <div className="card mb-4">
         <div className="card-body">
           <form onSubmit={submitForm} data-section="domain" className="col-md-8 offset-md-2 px-0">
             <div className="form-group">
@@ -175,7 +211,7 @@ const MyBlogSetting = props => {
                 <tbody>
                   <tr>
                     <td><code>www</code></td>
-                    <td><code>svr1.blogwi.org</code></td>
+                    <td><code>host.blogwi.org</code></td>
                   </tr>
                   <tr>
                     <td><code>{store.authuser.username}</code></td>
@@ -188,6 +224,36 @@ const MyBlogSetting = props => {
           </form>
         </div>
       </div>
+      <h5>Meta Tags</h5>
+      <form onSubmit={submitForm} data-section="metatag">
+        <ul className="list-group">
+          {state.form.meta_tags.map((v, k) => {
+            return (<li className="list-group-item" key={k}>
+              <div className="col-md-8 offset-md-2 px-0">
+                <div className="form-group">
+                  <button onClick={removeMeta} data-index={k} type="button" className="btn btn-sm btn-light text-danger float-right mb-2">Remove</button>
+                  <label>Meta tag #{k + 1}</label>
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">Name</span>
+                    </div>
+                    <input type="text" id={'name-' + k} value={v.name} onChange={changeMeta} className="form-control" />
+                  </div>
+                  <textarea id={'content-' + k} value={v.content} onChange={changeMeta} className="form-control mt-2" placeholder="content"></textarea>
+                </div>
+              </div>
+            </li>)
+          })}
+          <li className="list-group-item text-center">
+            <button onClick={addMeta} type="button" className="btn btn-sm btn-light text-success">Add</button>
+          </li>
+          <li className="list-group-item">
+            <div className="col-md-8 offset-md-2 px-0">
+              <button className="btn btn-info">Submit</button>
+            </div>
+          </li>
+        </ul>
+      </form>
     </React.Fragment>
   )
 }

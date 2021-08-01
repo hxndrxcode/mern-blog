@@ -4,9 +4,9 @@ import React, { useContext, useEffect, useState } from "react"
 import { Redirect, useParams } from "react-router-dom"
 import { RootContext } from "../context/rootContext"
 import PageHeader from "../partials/page-header"
+import * as Icon from 'react-feather'
 
-const MyPostCreate
- = props => {
+const MyPostCreate = props => {
   const { store } = useContext(RootContext)
   document.title = 'Create Post' + store.docTitle
   const { blogId } = useParams()
@@ -21,6 +21,7 @@ const MyPostCreate
       published_at_time: moment().add(1, 'hour').format('HH:mm'),
       is_published: true,
       publish_soon: true,
+      labels: []
     },
     isDone: false
   })
@@ -35,6 +36,33 @@ const MyPostCreate
       form: {
         ...state.form,
         [e.target.id]: val
+      }
+    })
+  }
+
+  const addLabel = e => {
+    const el = document.getElementById('new-label')
+    let labels = state.form.labels
+    labels.push(el.value)
+    setState({
+      ...state,
+      form: {
+        ...state.form,
+        labels
+      }
+    })
+    el.value = ''
+  }
+
+  const removeLabel = e => {
+    let idx = e.target.dataset.index
+    let labels = state.form.labels
+    labels.splice(idx, 1)
+    setState({
+      ...state,
+      form: {
+        ...state.form,
+        labels
       }
     })
   }
@@ -75,6 +103,29 @@ const MyPostCreate
         <div className="card collapse mt-2" id="card-advanced">
           <div className="card-body">
             <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+                  <label htmlFor="labels" className="d-block">Label</label>
+                  <div>
+                    {state.form.labels.map((v, k) => {
+                      return (
+                        <button
+                          onClick={removeLabel}
+                          type="button" className="btn btn-sm btn-outline-secondary mr-2 mb-2"
+                          key={k} data-index={k}>
+                          {v} &times;
+                        </button>
+                      )
+                    })}
+                    <div className="btn-group btn-group-sm">
+                      <input type="text" className="form-control form-control-sm border-secondary" id="new-label" />
+                      <button onClick={addLabel} type="button" className="btn btn-sm btn-outline-secondary mr-2 mb-2">
+                        <Icon.Plus />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="col-md-6">
                 <div className="form-group">
                   <label htmlFor="permalink">Custom Permalink</label>

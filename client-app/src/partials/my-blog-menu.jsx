@@ -1,21 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import * as Icon from "react-feather"
 
 const MyBlogMenu = props => {
     const linkList = [
         { path: 'post', text: 'Post' },
         { path: 'comment', text: 'Comment' },
         { path: 'page', text: 'Page' },
+        { path: 'follower', text: 'Follower' },
         { path: 'setting', text: 'Setting' }
     ]
+    let activeIndex = linkList.findIndex(v => v.path === props.path)
     return (
         <React.Fragment>
-            <div className="dropdown d-inline-block">
-                <button className="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
-                    Menu
-                </button>
-                <div className="dropdown-menu">
+            <div className="dropdown float-right">
+                <span className="btn-link dropdown-toggle" style={{fontSize: 'initial'}} data-toggle="dropdown">
+                    {activeIndex >= 0 ? linkList[activeIndex].text : ''}&nbsp;
+                </span>
+                <div className="dropdown-menu dropdown-menu-right">
                     {linkList.map(v => {
                         return (
                             <Link to={`/my-blog/${props.blogId}/${v.path}`}
@@ -25,6 +26,10 @@ const MyBlogMenu = props => {
                             </Link>
                         )
                     })}
+                    <div className="dropdown-divider"></div>
+                    <Link to="/my-blog" className="dropdown-item">
+                        &larr; My Blog
+                    </Link>
                 </div>
             </div>
         </React.Fragment>

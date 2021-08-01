@@ -2,7 +2,8 @@ const { response } = require('express')
 const jwt = require('jsonwebtoken')
 const lodash = require('lodash')
 const User = require('../models/User')
-const { hashMake, hashVerify } = require('../helpers/Helper.js')
+const { hashMake, hashVerify, randomInt } = require('../helpers/Helper.js')
+const Mail = require('../helpers/Mail.js')
 
 class Controller {
     async login(req, res, next) {
@@ -51,11 +52,12 @@ class Controller {
         }
 
         data.password = hashMake(data.password)
+        data.verification = randomInt(999999, 100000)
         const user = new User(data)
         await user.save()
-        return res.send({
-            success: true
-        })
+        
+        await Mail.send(data.email, 'register', data)
+        return res.done(200, 'Success')
     }
 
     async getUserData(req, res) {

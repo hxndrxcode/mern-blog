@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Model = new Schema({
-  user_id: String,
+  user_id: Schema.Types.ObjectId,
   scheme: String,
   subdomain: String,
   domain: String,
@@ -12,7 +12,8 @@ const Model = new Schema({
   logo: String,
   post_count: { type: Number, default: 0 },
   follower_count: { type: Number, default: 0 },
-  meta_tags: Array
+  meta_tags: Array,
+  labels: Array
 }, {
     timestamps: {
       createdAt: 'created_at',

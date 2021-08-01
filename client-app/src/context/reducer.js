@@ -31,6 +31,27 @@ function reducer(store, action) {
                 ...store,
                 docTitle: store.siteName + ' - ' + action.data
             }
+        case 'set_warning':
+            return {
+                ...store,
+                alert: {
+                    status: 'danger',
+                    message: action.data
+                }
+            }
+        case 'set_notif':
+            return {
+                ...store,
+                alert: {
+                    status: 'success',
+                    message: action.data
+                }
+            }
+        case 'hide_alert':
+            return {
+                ...store,
+                alert: null
+            }
         default:
             throw new Error()
     }

@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Model = new Schema({
-  blog_id: String,
-  post_id: String,
+  blog_id: Schema.Types.ObjectId,
+  post_id: Schema.Types.ObjectId,
   comment: String,
   created_by: String,
   updated_by: String,

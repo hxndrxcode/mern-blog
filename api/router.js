@@ -10,6 +10,7 @@ const Blog = require('./controllers/BlogController.js')
 const Post = require('./controllers/PostController.js')
 const Page = require('./controllers/PageController.js')
 const Comment = require('./controllers/CommentController.js')
+const Follow = require('./controllers/FollowController.js')
 
 
 router.post('/auth/login', handledBy(Auth.login))
@@ -29,6 +30,7 @@ router.put('/profile', handledBy(User.updateProfile))
 router.get('/myblog', handledBy(Blog.myBlogList))
 router.get('/myblog/:id', handledBy(Blog.myBlogDetail))
 router.post('/myblog', handledBy(Blog.myBlogStore))
+router.put('/myblog/:id/domain', handledBy(Blog.myBlogUpdateDomain))
 router.put('/myblog/:id/:section', handledBy(Blog.myBlogUpdate))
 
 router.use(checkAsset)
@@ -48,6 +50,9 @@ router.post('/mypage/bulkaction', handledBy(Page.myPageBulkAction))
 router.get('/mycomment', handledBy(Comment.myCommentList))
 router.get('/mycomment/:id', handledBy(Comment.myCommentDetail))
 router.post('/mycomment/bulkaction', handledBy(Comment.myCommentBulkAction))
+
+router.get('/myfollower', handledBy(Follow.myFollower))
+router.delete('/myfollower/:id', handledBy(Follow.myFollowerUnfollow))
 
 router.use(errorHandler)
 

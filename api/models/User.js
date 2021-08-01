@@ -8,7 +8,8 @@ const Model = new Schema({
   fullname: String,
   photo: String,
   bio: String,
-  is_verified: Boolean,
+  is_verified: { type: Boolean, default: false },
+  verification_code: String,
   blog_count: Number
 }, {
   timestamps: {

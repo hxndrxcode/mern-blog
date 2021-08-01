@@ -7,7 +7,7 @@ import AuthLogin from "../public-pages/auth-login";
 import AuthRegister from "../public-pages/auth-register";
 
 import MyBlog from "../private-pages/my-blog";
-import MyAccount from "../private-pages/my-account";
+import EditProfile from "../private-pages/edit-profile";
 import MyBlogCreate from '../private-pages/my-blog-create';
 import MyPost from '../private-pages/my-post';
 import MyPostCreate from '../private-pages/my-post-create';
@@ -17,6 +17,8 @@ import MyPage from '../private-pages/my-page';
 import MyPageCreate from '../private-pages/my-page-create';
 import MyPageEdit from '../private-pages/my-page-edit';
 import MyBlogSetting from '../private-pages/my-blog-setting';
+import MyFollower from '../private-pages/my-follower';
+import NotFound from '../public-pages/not-found';
 
 const Routes = props => {
   return (
@@ -43,9 +45,11 @@ const Routes = props => {
         <PrivateRoute exact path="/my-blog/:blogId/page/:pageId/edit" component={MyPageEdit} />
 
         <PrivateRoute exact path="/my-blog/:blogId/comment" component={MyComment} />
+        <PrivateRoute exact path="/my-blog/:blogId/follower" component={MyFollower} />
 
-        <PrivateRoute exact path="/my-account" component={MyAccount} />
-        {/* <Route component={NotFound} /> */}
+        <Redirect exact from="/my-account" to="/my-account/edit" />
+        <PrivateRoute exact path="/my-account/edit" component={EditProfile} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   )

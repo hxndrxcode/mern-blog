@@ -7,10 +7,12 @@ import Sidebar from "./layouts/sidebar";
 import Routes from "./route/Routes";
 import Wrapper from "./layouts/wrapper";
 import Footer from "./layouts/footer";
+import { ToastContainer } from 'react-toast'
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <RootProvider>
         <Wrapper>
           <Header />

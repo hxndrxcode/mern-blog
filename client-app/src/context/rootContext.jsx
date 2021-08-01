@@ -22,7 +22,8 @@ const RootProvider = ({ children }) => {
       headers: { Authorization: 'Bearer ' + jwtToken }
     },
     jwtToken,
-    docTitle: ' - ' + siteName
+    docTitle: ' - ' + siteName,
+    isNotFound: false
   })
   return  (
     <RootContext.Provider value={{ store, dispatch }}>
