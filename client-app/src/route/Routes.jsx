@@ -19,6 +19,8 @@ import MyPageEdit from '../private-pages/my-page-edit';
 import MyBlogSetting from '../private-pages/my-blog-setting';
 import MyFollower from '../private-pages/my-follower';
 import NotFound from '../public-pages/not-found';
+import BlogView from '../public-pages/blog-view';
+import Trending from '../public-pages/trending';
 
 const Routes = props => {
   return (
@@ -28,8 +30,9 @@ const Routes = props => {
         <Route exact path="/login" component={AuthLogin} />
 
         <Route exact path="/" component={Feed} />
-        <Route exact path="/trending" component={Feed} />
+        <Route exact path="/trending" component={Trending} />
         <Route exact path="/blogs" component={Blogs} />
+        <Route exact path="/blog/:blogId" component={BlogView} />
 
         <PrivateRoute exact path="/my-blog" component={MyBlog} />
         <PrivateRoute exact path="/my-blog/create" component={MyBlogCreate} />

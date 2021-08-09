@@ -48,8 +48,8 @@ const MyPost = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data.posts,
-          blogData: data.data.blog
+          listData: data.posts,
+          blogData: data.blog
         })
       })
   }
@@ -124,7 +124,7 @@ const MyPost = props => {
               <Icon.Edit />
               Edit
             </Link>
-            <a href={`${v.blog.hostname}/post/${v.permalink}`} target="_blank" rel="noreferrer noopener" className="btn btn-sm btn-light">
+            <a href={`${v.blog.hostname}/post/${v.permalink}?ref=app.blogwi.org`} target="_blank" rel="noreferrer noopener" className="btn btn-sm btn-light">
               <Icon.ExternalLink /> Visit
             </a>
           </div>

@@ -11,7 +11,9 @@ class Controller {
             }, { _id: 1})
             postId = findPost.map(v => v._id)
             if (postId.length === 0) {
-                return res.done(200, 'Success', [])
+                return res.json({
+                    data: []
+                })
             }
         }
 
@@ -41,7 +43,7 @@ class Controller {
             }
         })
 
-        return res.done(200, 'Success', {
+        return res.json({
             comments: data,
             blog: req.blog
         })
@@ -91,7 +93,7 @@ class Controller {
             user_id: req.user.id
         })
         if (!data) {
-            throw Error(404)
+            return res.error(404, 'Comment not found')
         }
         return res.json({
             data

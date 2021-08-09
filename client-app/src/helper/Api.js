@@ -1,3 +1,6 @@
+const ApiURL = process.env.REACT_APP_API_URL
+const axios = require('axios')
+
 export const handleApiError = (err, store, dispatch) => {
     if (err.response) {
         console.log(err.response)
@@ -14,3 +17,10 @@ export const handleApiError = (err, store, dispatch) => {
         console.error(err)
     }
 }
+
+export const Api = axios.create({
+    baseURL: ApiURL,
+    params: {
+        t: new Date().getTime()
+    }
+})

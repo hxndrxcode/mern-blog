@@ -28,7 +28,7 @@ class Middleware {
             return req.method === 'GET' ? req.query[key] : req.body[key]
         }
 
-        res.done = (status, message, data) => {
+        res.error = (status, message, data) => {
             return res.status(status).json({
                 message,
                 data

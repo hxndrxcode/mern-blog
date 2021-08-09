@@ -17,6 +17,7 @@ router.post('/auth/login', handledBy(Auth.login))
 router.post('/auth/register', handledBy(Auth.register))
 
 router.get('/postfeed', handledBy(Post.postFeed))
+router.get('/postbyblog/:id', handledBy(Post.postByBlog))
 router.get('/exploreblog', handledBy(Blog.exploreBlog))
 router.get('/exploreblog/:id', handledBy(Blog.exploreblogDetail))
 
@@ -25,6 +26,8 @@ router.use(loggedIn)
 router.get('/auth/user', handledBy(Auth.getUserData))
 router.get('/profile', handledBy(User.profile))
 router.put('/profile', handledBy(User.updateProfile))
+router.post('/follow/:id', handledBy(Follow.doFollow))
+router.post('/unfollow/:id', handledBy(Follow.doUnfollow))
 
 
 router.get('/myblog', handledBy(Blog.myBlogList))

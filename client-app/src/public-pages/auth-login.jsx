@@ -4,11 +4,11 @@ import axios from "axios";
 import { RootContext } from "../context/rootContext";
 import PageHeader from "../partials/page-header";
 import { handleApiError } from "../helper/Api";
-import { toast } from 'react-toast'
 
 const AuthLogin = () => {
-  toast.success('hallo')
   const { store, dispatch } = useContext(RootContext)
+  document.title = 'Login' + store.docTitle
+
   const [state, setState] = useState({
     username: '',
     password: '',
@@ -23,7 +23,6 @@ const AuthLogin = () => {
   }
 
   const submitLogin = () => {
-    
     let data = {
       username: state.username,
       password: state.password,

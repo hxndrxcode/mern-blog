@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PageHeader from "../partials/page-header";
 import { RootContext } from "../context/rootContext";
 import axios from "axios";
-import { handleApiError } from "../helper/Api";
+import { Api, handleApiError } from "../helper/Api";
 import BlogItem from "../partials/blog-item";
 
 const Blogs = props => {
@@ -10,7 +10,8 @@ const Blogs = props => {
   const qs = new URLSearchParams(props.location.search)
   const [state, setState] = useState({
     listData: [],
-    show: qs.get('show') || 'all'
+    show: qs.get('show') || 'all',
+    update: 0
   })
 
   const fetchBlog = () => {
@@ -31,11 +32,33 @@ const Blogs = props => {
     })
   }
 
+  const doFollow = e => {
+    Api.post('follow/' + e.target.dataset.id, null, store.authHeader)
+      .then(res => {
+        setState({
+          ...state,
+          update: new Date().getTime()
+        })
+      })
+      .catch(err => handleApiError(err, store, dispatch))
+  }
+
+  const doUnfollow = e => {
+    Api.post('unfollow/' + e.target.dataset.id, null, store.authHeader)
+      .then(res => {
+        setState({
+          ...state,
+          update: new Date().getTime()
+        })
+      })
+      .catch(err => handleApiError(err, store, dispatch))
+  }
+
   useEffect(() => {
     document.title = 'Explore Blogs' + store.docTitle
     fetchBlog()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.show])
+  }, [state.show, state.update])
 
   return (
     <React.Fragment>
@@ -47,7 +70,7 @@ const Blogs = props => {
         </select>
       </div>
       {state.listData.map(v => {
-        return <BlogItem data={v} key={v._id} />
+        return <BlogItem data={v} key={v._id} doFollow={doFollow} doUnfollow={doUnfollow} />
       })}
     </React.Fragment>
 )

@@ -23,8 +23,8 @@ const MyComment = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data.comments,
-          blogData: data.data.blog
+          listData: data.comments,
+          blogData: data.blog
         })
       })
   }

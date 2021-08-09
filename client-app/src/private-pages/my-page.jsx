@@ -39,8 +39,8 @@ const MyPage = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data.pages,
-          blogData: data.data.blog
+          listData: data.pages,
+          blogData: data.blog
         })
       })
   }

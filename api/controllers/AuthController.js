@@ -8,15 +8,22 @@ const Mail = require('../helpers/Mail.js')
 class Controller {
     async login(req, res, next) {
         let user = await User.findOne({
-            username: req.body.username
+            $or: [
+                { username: req.body.username },
+                { email: req.body.username }
+            ]
         })
         if (!user) {
-            throw Error(404)
+            return res.error(400, 'Wrong password or username')
         }
 
         let verify = hashVerify(req.body.password, user.password)
         if (!verify) {
-            throw Error(401)
+            return res.error(400, 'Wrong password or username')
+        }
+
+        if (!user.is_verified) {
+            return res.error(403, 'Please activate your account')
         }
 
         let payload = {
@@ -24,7 +31,7 @@ class Controller {
             username: user.username
         }
         let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '90d' })
-        return res.send({
+        return res.json({
             token,
             user: payload
         })
@@ -39,25 +46,23 @@ class Controller {
         ])
         let checkUsername = await User.findOne({ username: data.username })
         if (checkUsername) {
-            return res.status(405).send({
-                message: 'Username already used.'
-            })
+            return res.error(400, 'Username already used')
         }
 
         let checkEmail = await User.findOne({ email: data.email })
         if (checkEmail) {
-            return res.status(405).send({
-                message: 'Email already registered. Please login instead.'
-            })
+            return res.error(400, 'Email already registered. Please login instead')
         }
 
         data.password = hashMake(data.password)
-        data.verification = randomInt(999999, 100000)
+        data.verification_code = randomInt(999999, 100000)
         const user = new User(data)
         await user.save()
         
         await Mail.send(data.email, 'register', data)
-        return res.done(200, 'Success')
+        return res.json({
+            success: true
+        })
     }
 
     async getUserData(req, res) {

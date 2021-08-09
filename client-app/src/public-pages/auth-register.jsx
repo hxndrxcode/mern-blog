@@ -1,16 +1,20 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
 import PageHeader from "../partials/page-header";
 import { RootContext } from "../context/rootContext";
-
+import { Api, handleApiError } from "../helper/Api";
 
 const AuthRegister = () => {
-  const { store } = useContext(RootContext)
+  const { store, dispatch } = useContext(RootContext)
+  document.title = 'Register' + store.docTitle
+
   const [state, setState] = useState({
-    username: '',
-    email: '',
-    fullname: '',
-    password: ''
+    form: {
+      username: '',
+      email: '',
+      fullname: '',
+      password: ''
+    },
+    isDone: false
   })
 
   const changeData = e => {
@@ -20,16 +24,19 @@ const AuthRegister = () => {
     })
   }
 
-  const submitRegister = () => {
+  const submitRegister = e => {
+    e.preventDefault()
     let data = {
       ...state
     }
-    axios.post(store.apiUrl + '/auth/register', data).then(res => {
-      console.log(res.data)
-    })
-      .catch(err => {
-        console.log(err)
+    Api.post('auth/register', data)
+      .then(res => {
+        dispatch({
+          type: 'set_notif',
+          data: 'Registration success. Please check activation link in your email.'
+        })
       })
+      .catch(err => handleApiError(err, store, dispatch))
   }
 
   return (
@@ -37,25 +44,25 @@ const AuthRegister = () => {
       <PageHeader title="Register" btnLink="/login" btnText="Login" />
       <div className="card">
         <div className="col-md-6 offset-md-3 px-0">
-          <div className="card-body">
+          <form onSubmit={submitRegister} className="card-body">
             <div className="form-group">
               <label>Full Name</label>
-              <input type="text" className="form-control" id="fullname" value={state['fullname']} onChange={changeData} />
+              <input type="text" className="form-control" id="fullname" value={state.form.fullname} onChange={changeData} />
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input type="text" className="form-control" id="email" value={state['email']} onChange={changeData} />
+              <input type="text" className="form-control" id="email" value={state.form.email} onChange={changeData} />
             </div>
             <div className="form-group">
               <label>Username</label>
-              <input type="text" className="form-control" id="username" value={state['username']} onChange={changeData} />
+              <input type="text" className="form-control" id="username" value={state.form.username} onChange={changeData} />
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" id="password" value={state['password']} onChange={changeData} />
+              <input type="password" className="form-control" id="password" value={state.form.password} onChange={changeData} />
             </div>
-            <button onClick={submitRegister} className="btn btn-primary mt-2 mb-3">Register</button>
-          </div>
+            <button className="btn btn-primary mt-2 mb-3">Register</button>
+          </form>
         </div>
       </div>
     </React.Fragment>

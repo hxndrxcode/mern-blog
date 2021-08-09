@@ -1,16 +1,17 @@
 const { sendResponse } = require('../helpers/Helper')
 const Blog = require('../models/Blog')
 const Follow = require('../models/Follow')
+const User = require('../models/User')
 const dns = require('dns').promises
 const { getDomain, getSubdomain } = require('tldjs')
 
 class Controller {
     async myBlogList(req, res) {
-        let data = await Blog.find({
+        let blogs = await Blog.find({
             user_id: req.user.id
         })
         return res.json({
-            data
+            blogs
         })
     }
 
@@ -22,7 +23,7 @@ class Controller {
 
         let exist = await Blog.findOne({ subdomain: data.subdomain })
         if (exist) {
-            return res.done(403, 'Subdomain has been used')
+            return res.error(403, 'Subdomain has been used')
         }
 
         data.scheme = 'https://'
@@ -30,7 +31,7 @@ class Controller {
         data.user_id = req.user.id
 
         await new Blog(data).save()
-        return res.done(200, 'Success')
+        return res.json({})
     }
 
     async myBlogUpdate(req, res) {
@@ -39,7 +40,7 @@ class Controller {
             user_id: req.user.id
         })
         if (!blog) {
-            return res.done(404, 'Blog not found')
+            return res.error(404, 'Blog not found')
         }
 
         let body = []
@@ -53,7 +54,7 @@ class Controller {
 
         Object.assign(blog, body)
         await blog.save()
-        return res.done(200, 'Success')
+        return res.json({})
     }
 
     async myBlogUpdateDomain(req, res) {
@@ -62,7 +63,7 @@ class Controller {
             user_id: req.user.id
         })
         if (!blog) {
-            return res.done(404, 'Blog not found')
+            return res.error(404, 'Blog not found')
         }
 
         const body = req.getBody([
@@ -72,7 +73,7 @@ class Controller {
         if (blog.subdomain !== body.subdomain) {
             let exist = await Blog.findOne({ subdomain: body.subdomain })
             if (exist) {
-                return res.done(403, 'Subdomain is used')
+                return res.error(403, 'Subdomain is used')
             }
             body.hostname = 'https://' + body.subdomain + '.blogwi.com'
         }
@@ -83,18 +84,18 @@ class Controller {
 
             let exist = await Blog.findOne({ domain: body.domain })
             if (exist) {
-                return res.done(403, 'Domain is used')
+                return res.error(403, 'Domain is used')
             }
 
             let cname1 = await dns.resolveCname(body.domain)
             if (!cname1.includes('host.blogwi.org')) {
-                return res.done(403, body.domain + ' does not yet pointed to host.blogwi.org')
+                return res.error(403, body.domain + ' does not yet pointed to host.blogwi.org')
             }
 
             let verifyuser = req.user.username + '.' + getDomain(body.domain)
             let cname2 = await dns.resolveCname(verifyuser)
             if (!cname2.includes('dv.blogwi.org')) {
-                return res.done(403, verifyuser + ' does not pointed to dv.blogwi.org')
+                return res.error(403, verifyuser + ' does not pointed to dv.blogwi.org')
             }
 
             body.hostname = body.scheme + body.domain
@@ -102,7 +103,7 @@ class Controller {
 
         Object.assign(blog, body)
         await blog.save()
-        return res.done(200, 'Success')
+        return res.json({})
     }
 
     async myBlogDetail(req, res) {
@@ -111,7 +112,7 @@ class Controller {
             user_id: req.user.id
         })
         if (!data) {
-            throw Error(404)
+            return res.error(404, 'Blog not found')
         }
         return res.json({
             data
@@ -128,7 +129,23 @@ class Controller {
             query = { _id: { $in: blogs.map(v => v.blog_id) }}
         }
 
-        let data = await Blog.find(query)
+        let data = await Blog.find(query).lean()
+        if (req.user) {
+            if (show == 'follow') {
+                data.forEach(v => {
+                    v.is_followed = true
+                })
+            } else {
+                let blogs = (await Follow.find({
+                    user_id: req.user.id
+                })).map(v => String(v.blog_id))
+
+                data.forEach(v => {
+                    v.is_followed = blogs.includes(String(v._id))
+                })
+            }
+        }
+
         return res.json({
             data
         })
@@ -137,8 +154,9 @@ class Controller {
     async exploreblogDetail(req, res) {
         let id = req.params.id
         let data = await Blog.findById(id)
+        data.user = await User.findById(data.user_id)
         if (!data) {
-            throw Error(404)
+            return res.error(404, 'Blog not found')
         }
         return res.json({
             data

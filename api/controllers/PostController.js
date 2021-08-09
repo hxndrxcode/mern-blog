@@ -1,5 +1,6 @@
 const Post = require('../models/Post')
 const Blog = require('../models/Blog')
+const Follow = require('../models/Follow')
 const { postDate, generatePermalink } = require('../helpers/Helper')
 const moment = require('moment')
 
@@ -20,7 +21,7 @@ class Controller {
             }
         })
 
-        return res.done(200, 'Success', {
+        return res.json({
             posts,
             blog: req.blog
         })
@@ -47,6 +48,12 @@ class Controller {
         if (!data.permalink) {
             data.permalink = generatePermalink(data.title)
         }
+        let findImage = data.body.match(/!\[.*]\(.*\)/)
+        if (findImage.length > 0) {
+            data.thumbnail = findImage[0].replace(/!\[.*]\(/, '').slice(0, -1)
+        } else {
+            data.thumbnail = 'https://via.placeholder.com/85'
+        }
         Object.assign(data, {
             published_at,
             created_by: req.user.id,
@@ -70,7 +77,7 @@ class Controller {
     async myPostDetail(req, res) {
         let data = await Post.findById(req.params.id)
         if (!data) {
-            throw Error(404)
+            return res.error(404, 'Post not found')
         }
 
         return res.json({
@@ -81,7 +88,7 @@ class Controller {
     async myPostUpdate(req, res) {
         let detail = await Post.findById(req.params.id)
         if (!detail) {
-            throw Error(404)
+            return res.error(404, 'Post not found')
         }
 
         let data = req.getBody([
@@ -90,6 +97,17 @@ class Controller {
             'body',
             'labels'
         ])
+
+        let findImage = data.body.match(/!\[.*]\(.*\)/)
+        if (findImage.length > 0) {
+            let thumbnail = findImage[0].replace(/!\[.*]\(/, '').slice(0, -1)
+            if (findImage[0] !== thumbnail) {
+                data.thumbnail = thumbnail
+            }
+        } else {
+            data.thumbnail = 'https://via.placeholder.com/85'
+        }
+
         Object.assign(detail, data)
         await detail.save()
 
@@ -99,21 +117,59 @@ class Controller {
     }
 
     async postFeed(req, res) {
+        if (!req.user.id) {
+            return res.json({
+                data: []
+            })
+        }
+        let blogs = (await Follow.find({
+            user_id: req.user.id
+        })).map(v => v.blog_id)
+
+        let data = await Post.find({
+            is_published: true,
+            is_deleted: false,
+            published_at: { $lt: Date.now() },
+            blog_id: { $in: blogs }
+        }).lean()
+
+        if (data.length > 0) {
+            let blogIds = data.map(v => v.blog_id)
+            let blogs = await Blog.find({
+                _id: { $in: blogIds }
+            }, { title: 1, _id: 1 })
+
+            data.forEach(v => {
+                v.formatted_date = postDate(v.published_at)
+                let blog = blogs.find(w => String(w._id) == String(v.blog_id)) || {}
+                v.blog = Object.assign({}, blog)
+            })
+        }
+
+        return res.json({
+            data,
+            following_count: blogs.length
+        })
+    }
+
+    async postByBlog(req, res) {
         let data = await Post.find({
             is_published: true,
             is_deleted: false,
             published_at: {
                 $lt: Date.now()
-            }
+            },
+            blog_id: req.params.id
         })
-
-        data.forEach(v => {
-            v.thumbnail = 'https://via.placeholder.com/85'
-            v.formatted_date = postDate(v.published_at)
-        })
+        if (data.length > 0) {
+            data.forEach(v => {
+                v.formatted_date = postDate(v.published_at)
+                v.blog = {}
+            })
+        }
 
         return res.json({
-            data
+            posts: data
         })
     }
 

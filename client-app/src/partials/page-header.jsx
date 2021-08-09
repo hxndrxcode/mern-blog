@@ -1,9 +1,14 @@
 import React from "react"
 import * as Icon from 'react-feather'
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
-const PageHeader = ({ title, btnLink, btnText, btnArrow, children, btnLogout }) => {
-
+const PageHeader = ({ title, btnLink, btnText, btnArrow, children }) => {
+    const { state } = useLocation()
+    if (state) {
+        btnLink = state.from
+        btnText = state.fromTitle
+        btnArrow = 'left'
+    }
     btnArrow = btnArrow || 'left'
     return (
         <React.Fragment>

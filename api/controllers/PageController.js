@@ -12,7 +12,7 @@ class Controller {
             v.formatted_date = postDate(v.published_at)
         })
 
-        return res.done(200, 'Success', {
+        return res.json({
             pages: data,
             blog: req.blog
         })
@@ -44,7 +44,7 @@ class Controller {
     async myPageDetail(req, res) {
         let data = await Page.findById(req.params.id)
         if (!data) {
-            throw Error(404)
+            return res.error(404, 'Page not found')
         }
 
         return res.json({
@@ -55,7 +55,7 @@ class Controller {
     async myPageUpdate(req, res) {
         let detail = await Page.findById(req.params.id)
         if (!detail) {
-            throw Error(404)
+            return res.error(404, 'Page not found')
         }
 
         let data = req.getBody([

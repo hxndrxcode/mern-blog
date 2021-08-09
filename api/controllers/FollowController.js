@@ -31,14 +31,14 @@ class Controller {
             v.formatted_date = postDate(v.created_at)
         })
 
-        return res.done(200, 'Success', {
+        return res.json({
             followers: data,
             blog: req.blog
         })
     }
 
     async myFollowerUnfollow(req, res) {
-        return res.done(200, 'Success', data)
+        return res.error(200, 'Success', data)
     }
 
     async myFollowingBlog(req, res) {
@@ -53,7 +53,30 @@ class Controller {
                 as: 'blog'
             }
         })
-        return res.done(200, 'Success', data)        
+        return res.json(data)        
+    }
+
+    async doFollow(req, res) {
+        let obj = {
+            user_id: req.user.id,
+            blog_id: req.params.id
+        }
+        let check = await Follow.findOne(obj)
+        if (check) {
+            return res.json(true)
+        }
+
+        await new Follow(obj).save()
+        return res.json(true)
+    }
+
+    async doUnfollow(req, res) {
+        let obj = {
+            user_id: req.user.id,
+            blog_id: req.params.id
+        }
+        await Follow.findOneAndDelete(obj)
+        return res.json(true)        
     }
 }
 

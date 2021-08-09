@@ -26,8 +26,14 @@ const Sidebar = () => {
               </li>
               <li className="nav-item">
                 <NavLink to="/blogs" exact={true} className="nav-link">
-                  <Icon.Compass className="mr-3" />
+                  <Icon.Folder className="mr-3" />
                   Explore Blogs
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/users" exact={true} className="nav-link">
+                  <Icon.UserCheck className="mr-3" />
+                  Authors
                 </NavLink>
               </li>
               <div className="dropdown-divider"></div>
