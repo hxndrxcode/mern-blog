@@ -9,7 +9,7 @@ const PostItem = ({ data, showBlog = true }) => {
         <img src={data.thumbnail} alt="thumbnail" className="float-right d-none d-sm-inline ml-3"
           style={{width: '85px'}} />
         <h6 className="mb-2">
-          <a href={`${data.domain}/post/${data.permalink}?ref=app.blogwi.org`} target="_blank" rel="noopener noreferrer">
+          <a href={`${data.blog.hostname}/post/${data.permalink}?ref=app.blogwi.org`} target="_blank" rel="noopener noreferrer">
             {data.title}
           </a>
         </h6>

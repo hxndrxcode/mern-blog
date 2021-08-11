@@ -5,6 +5,7 @@ import { Redirect, useParams } from "react-router-dom"
 import { RootContext } from "../context/rootContext"
 import PageHeader from "../partials/page-header"
 import * as Icon from 'react-feather'
+import Editor from "../partials/editor"
 
 const MyPostCreate = props => {
   const { store } = useContext(RootContext)
@@ -79,7 +80,6 @@ const MyPostCreate = props => {
   }
 
   useEffect(() => {
-    // setTimeout(fetchPost, 500)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -93,7 +93,7 @@ const MyPostCreate = props => {
         </div>
         <div className="form-group">
           <label htmlFor="body">Body</label>
-          <textarea className="form-control" id="body" value={state.form.body} onChange={changes} rows="10" placeholder="Post body"></textarea>
+          <Editor value={state.form.body} changes={changes} formid="body"/>
         </div>
         <div className="">
           <button type="button" className="btn btn-light dropdown-toggle" data-toggle="collapse" data-target="#card-advanced">

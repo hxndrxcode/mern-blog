@@ -6,6 +6,7 @@ import { RootContext } from "../context/rootContext"
 import { handleApiError } from "../helper/Api"
 import PageHeader from "../partials/page-header"
 import * as Icon from 'react-feather'
+import Editor from "../partials/editor"
 
 const MyPostEdit = props => {
   const { store, dispatch } = useContext(RootContext)
@@ -24,7 +25,8 @@ const MyPostEdit = props => {
       is_published: true,
       publish_soon: true
     },
-    isDone: false
+    isDone: false,
+    isLoaded: false
   })
 
   const changes = e => {
@@ -81,7 +83,8 @@ const MyPostEdit = props => {
       .then(({ data }) => {
         setState({
           ...state,
-          form: data.data
+          form: data.data,
+          isLoaded: true
         })
       })
   }
@@ -90,7 +93,10 @@ const MyPostEdit = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return state.isDone ? <Redirect to={props.match.url.replace(`/${postId}/edit`, '')} /> : (
+  if (state.isDone) {
+    return <Redirect to={props.match.url.replace(`/${postId}/edit`, '')} />
+  }
+  return !!state.isLoaded && (
     <React.Fragment>
       <PageHeader title="Edit Post" btnLink={`/my-blog/${blogId}/post`} btnText="Post" />
       <form onSubmit={submitEdit}>
@@ -100,7 +106,7 @@ const MyPostEdit = props => {
         </div>
         <div className="form-group">
           <label htmlFor="body">Body</label>
-          <textarea className="form-control" id="body" value={state.form.body} onChange={changes} rows="10"></textarea>
+          <Editor value={state.form.body} changes={changes} formid="body" />
         </div>
         <div className="">
           <button type="button" className="btn btn-light dropdown-toggle" data-toggle="collapse" data-target="#card-advanced">

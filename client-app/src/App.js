@@ -18,7 +18,7 @@ const App = () => {
             <div className="col-12 col-lg-3">
               <Sidebar />
             </div>
-            <div className="col-12 col-lg-9">
+            <div className="col-12 col-lg-9" style={{minHeight: '75vh'}}>
               <Switch>
                 <Route component={Routes} />
               </Switch>

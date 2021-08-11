@@ -25,7 +25,7 @@ const BlogView = props => {
   const fetchBlog = () => {
     Api.get('exploreblog/' + blogId, store.authHeader)
       .then(res => {
-        setBlogdata(res.data.data)
+        setBlogdata(res.data.blog)
       })
       .catch(e => handleApiError(e, store, dispatch))
   }
@@ -39,11 +39,11 @@ const BlogView = props => {
 
   return (
     <React.Fragment>
-      <PageHeader title={blogData.title} btnLink="/blogs" btnText="Explore" />
+      <PageHeader title={blogData.title} btnLink="/blogs" btnText="Blogs" />
       {!!blogData._id && (
-        <div className="d-flex">
-          <div className="mr-3">
-            <img src={blogData.logo} alt="" />
+        <div className="d-sm-flex d-block">
+          <div className="mr-sm-3">
+            <img src={blogData.logo} alt="" className="mx-auto d-block mb-3" />
           </div>
           <div>
             <p className="mb-1">{blogData.tagline}</p>

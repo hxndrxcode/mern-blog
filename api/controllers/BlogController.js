@@ -115,7 +115,7 @@ class Controller {
             return res.error(404, 'Blog not found')
         }
         return res.json({
-            data
+            blog: data
         })
     }
 
@@ -153,13 +153,13 @@ class Controller {
 
     async exploreblogDetail(req, res) {
         let id = req.params.id
-        let data = await Blog.findById(id)
-        data.user = await User.findById(data.user_id)
-        if (!data) {
+        let blog = await Blog.findById(id).lean()
+        blog.user = await User.findById(blog.user_id)
+        if (!blog) {
             return res.error(404, 'Blog not found')
         }
         return res.json({
-            data
+            blog
         })
     }
 }

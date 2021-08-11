@@ -8,7 +8,7 @@ const Model = new Schema({
   created_by: String,
   updated_by: String,
   is_hidden: {type: Boolean, default: false},
-  formatted_date: String
+  is_private: {type: Boolean, default: false}
 }, {
   timestamps: {
     createdAt: 'created_at',

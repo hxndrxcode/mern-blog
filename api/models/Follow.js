@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Model = new Schema({
-  user_id: Schema.Types.ObjectId,
-  blog_id: Schema.Types.ObjectId
+  user_id: String,
+  blog_id: String,
 }, {
   timestamps: {
     createdAt: 'created_at',

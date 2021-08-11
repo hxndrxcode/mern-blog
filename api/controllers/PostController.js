@@ -13,7 +13,7 @@ class Controller {
         if (req.query.search) {
             query.title = new RegExp(req.query.search, 'gi')
         }
-        let posts = await Post.find(query)
+        let posts = await Post.find(query).sort({ created_at: -1 }).lean()
         posts.forEach(v => {
             v.formatted_date = postDate(v.published_at)
             v.blog = {
@@ -49,10 +49,10 @@ class Controller {
             data.permalink = generatePermalink(data.title)
         }
         let findImage = data.body.match(/!\[.*]\(.*\)/)
-        if (findImage.length > 0) {
+        if (findImage && findImage.length > 0) {
             data.thumbnail = findImage[0].replace(/!\[.*]\(/, '').slice(0, -1)
         } else {
-            data.thumbnail = 'https://via.placeholder.com/85'
+            data.thumbnail = 'https://via.placeholder.com/85?Text=No+Image'
         }
         Object.assign(data, {
             published_at,
@@ -99,7 +99,7 @@ class Controller {
         ])
 
         let findImage = data.body.match(/!\[.*]\(.*\)/)
-        if (findImage.length > 0) {
+        if (findImage && findImage.length > 0) {
             let thumbnail = findImage[0].replace(/!\[.*]\(/, '').slice(0, -1)
             if (findImage[0] !== thumbnail) {
                 data.thumbnail = thumbnail
@@ -122,7 +122,7 @@ class Controller {
                 data: []
             })
         }
-        let blogs = (await Follow.find({
+        let followedBlogIds = (await Follow.find({
             user_id: req.user.id
         })).map(v => v.blog_id)
 
@@ -130,25 +130,24 @@ class Controller {
             is_published: true,
             is_deleted: false,
             published_at: { $lt: Date.now() },
-            blog_id: { $in: blogs }
-        }).lean()
+            blog_id: { $in: followedBlogIds }
+        }).sort({ created_at: -1 }).lean()
 
         if (data.length > 0) {
             let blogIds = data.map(v => v.blog_id)
-            let blogs = await Blog.find({
+            let titleBlogs = await Blog.find({
                 _id: { $in: blogIds }
-            }, { title: 1, _id: 1 })
+            }, { title: 1, hostname: 1, _id: 1 })
 
             data.forEach(v => {
                 v.formatted_date = postDate(v.published_at)
-                let blog = blogs.find(w => String(w._id) == String(v.blog_id)) || {}
-                v.blog = Object.assign({}, blog)
+                v.blog = titleBlogs.find(w => String(w._id) == String(v.blog_id)) || {}
             })
         }
 
         return res.json({
             data,
-            following_count: blogs.length
+            following_count: followedBlogIds.length
         })
     }
 
@@ -160,11 +159,16 @@ class Controller {
                 $lt: Date.now()
             },
             blog_id: req.params.id
-        })
+        }).sort({ created_at: -1 }).lean()
+        let blogIds = data.map(v => v.blog_id)
+        let titleBlogs = await Blog.find({
+            _id: { $in: blogIds }
+        }, { title: 1, hostname: 1, _id: 1 })
+
         if (data.length > 0) {
             data.forEach(v => {
                 v.formatted_date = postDate(v.published_at)
-                v.blog = {}
+                v.blog = titleBlogs.find(w => String(w._id) == String(v.blog_id)) || {}
             })
         }
 

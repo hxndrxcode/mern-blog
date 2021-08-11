@@ -55,11 +55,11 @@ const AuthLogin = () => {
           <div className="card-body">
             <div className="form-group">
               <label>Username</label>
-              <input type="text" className="form-control" id="username" value={state['username']} onChange={changeData} />
+              <input type="text" className="form-control" id="username" value={state.username} onChange={changeData} />
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" id="password" value={state['password']} onChange={changeData} />
+              <input type="password" className="form-control" id="password" value={state.password} onChange={changeData} />
             </div>
             <button onClick={submitLogin} className="btn btn-primary mt-2 mb-3">Login</button>
             <div className="form-group">

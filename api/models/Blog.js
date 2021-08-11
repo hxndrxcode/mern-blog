@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Model = new Schema({
-  user_id: Schema.Types.ObjectId,
+  user_id: String,
   scheme: String,
   subdomain: String,
   domain: String,

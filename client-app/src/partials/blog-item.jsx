@@ -30,7 +30,7 @@ const BlogItem = ({ data, doFollow, doUnfollow }) => {
           </span>
         </p>
         {data.is_followed ? (
-          <button onClick={doUnfollow} data-id={data._id} className="btn btn-info btn-sm">Unfollow</button>
+          <button onClick={doUnfollow} data-id={data._id} className="btn btn-light btn-sm">Followed</button>
         ) : (
           <button onClick={doFollow} data-id={data._id} className="btn btn-info btn-sm">Follow</button>
         )}
