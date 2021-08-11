@@ -43,7 +43,7 @@ const BlogView = props => {
       {!!blogData._id && (
         <div className="d-sm-flex d-block">
           <div className="mr-sm-3">
-            <img src={blogData.logo} alt="" className="mx-auto d-block mb-3" />
+            <img src={blogData.logo} alt="" className="mb-3" />
           </div>
           <div>
             <p className="mb-1">{blogData.tagline}</p>

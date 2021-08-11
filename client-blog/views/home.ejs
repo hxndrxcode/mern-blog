@@ -1,0 +1,24 @@
+<% posts.forEach(post=> { %>
+<div class="border p-3 mb-3">
+    <img src="<%= post.thumbnail %>" alt="thumbnail" class="float-right d-none d-sm-inline ml-3"
+        style="width: 85px;">
+    <h6 class="mb-2">
+        <a href="/post/<%= post.permalink %>">
+            <%= post.title %>
+        </a>
+    </h6>
+    <p class="text-muted mb-0">
+        <span>11 Aug 2021</span>
+        <span class="ml-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            0
+        </span>
+    </p>
+    <p class="mb-0">
+        <%= post.body.substr(0, 75) %>...
+    </p>
+</div>
+<% }) %>
