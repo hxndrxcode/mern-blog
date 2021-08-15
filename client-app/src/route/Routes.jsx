@@ -3,8 +3,9 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Feed from "../public-pages/feed";
 import Blogs from "../public-pages/blogs";
-import AuthLogin from "../public-pages/auth-login";
-import AuthRegister from "../public-pages/auth-register";
+// import AuthLogin from "../public-pages/auth-login";
+// import AuthRegister from "../public-pages/auth-register";
+import AuthLoginOauth from '../public-pages/auth-login-oauth';
 
 import MyBlog from "../private-pages/my-blog";
 import EditProfile from "../private-pages/edit-profile";
@@ -21,13 +22,17 @@ import MyFollower from '../private-pages/my-follower';
 import NotFound from '../public-pages/not-found';
 import BlogView from '../public-pages/blog-view';
 import Trending from '../public-pages/trending';
+import MyLayout from '../private-pages/my-layout';
+import AuthOauthProvider from '../public-pages/auth-oauth-provider';
 
 const Routes = props => {
   return (
     <div>
       <Switch>
-        <Route exact path="/register" component={AuthRegister} />
-        <Route exact path="/login" component={AuthLogin} />
+        {/* <Route exact path="/register" component={AuthRegister} /> */}
+        {/* <Route exact path="/login" component={AuthLogin} /> */}
+        <Route exact path="/login" component={AuthLoginOauth} />
+        <Route exact path="/oauth/:provider" component={AuthOauthProvider} />
 
         <Route exact path="/" component={Feed} />
         <Route exact path="/trending" component={Trending} />
@@ -49,6 +54,7 @@ const Routes = props => {
 
         <PrivateRoute exact path="/my-blog/:blogId/comment" component={MyComment} />
         <PrivateRoute exact path="/my-blog/:blogId/follower" component={MyFollower} />
+        <PrivateRoute exact path="/my-blog/:blogId/layout" component={MyLayout} />
 
         <Redirect exact from="/my-account" to="/my-account/edit" />
         <PrivateRoute exact path="/my-account/edit" component={EditProfile} />

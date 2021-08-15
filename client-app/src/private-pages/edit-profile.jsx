@@ -3,7 +3,7 @@ import { RootContext } from "../context/rootContext";
 import PageHeader from "../partials/page-header";
 import { useState } from "react";
 import axios from "axios";
-import { handleApiError } from "../helper/Api";
+import { Api, handleApiError } from "../helper/Api";
 import MyAccountMenu from "../partials/my-account-menu";
 
 const EditProfile = () => {
@@ -22,7 +22,7 @@ const EditProfile = () => {
   })
 
   const fetchProfile = () => {
-    axios.get(store.apiUrl + '/profile', store.authHeader)
+    Api.get('profile', store.authHeader)
       .then(res => {
         const { fullname, photo, bio } = res.data.data
         setState({
@@ -60,11 +60,11 @@ const EditProfile = () => {
     let option = JSON.parse(JSON.stringify(store.authHeader))
     option.headers['Content-Type'] = 'multipart/form-data'
 
-    axios.post('https://img.vosy.net/upload/file', formData, option)
+    Api.post('misc/upload', formData, option)
       .then(res => {
         e.target.files = null
         let form = state.form
-        form.photo = 'https://img.vosy.net' + res.data.url
+        form.photo = res.data.url
         setState({
           ...state,
           form,

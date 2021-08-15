@@ -1,4 +1,4 @@
-const { sendResponse } = require('../helpers/Helper')
+const Helper = require('../helpers/Helper')
 const Blog = require('../models/Blog')
 const Follow = require('../models/Follow')
 const User = require('../models/User')
@@ -50,6 +50,20 @@ class Controller {
 
         if (req.params.section === 'metatag') {
             body = req.getBody(['meta_tags'])
+        }
+
+        if (req.params.section === 'style') {
+            let getBody = req.getBody(['custom_css', 'custom_css_replace'])
+            body = {
+                custom_style: {
+                    css: getBody.custom_css,
+                    is_replace: getBody.custom_css_replace,
+                }
+            }
+        }
+
+        if (req.params.section === 'navbar') {
+            body = req.getBody(['navbar']).filter(Boolean)
         }
 
         Object.assign(blog, body)
@@ -126,7 +140,7 @@ class Controller {
             let blogs = await Follow.find({
                 user_id: req.user.id
             }, { blog_id: 1 })
-            query = { _id: { $in: blogs.map(v => v.blog_id) }}
+            query = { _id: { $in: blogs.map(v => v.blog_id) } }
         }
 
         let data = await Blog.find(query).lean()

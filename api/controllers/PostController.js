@@ -1,7 +1,7 @@
 const Post = require('../models/Post')
 const Blog = require('../models/Blog')
 const Follow = require('../models/Follow')
-const { postDate, generatePermalink } = require('../helpers/Helper')
+const { postDate, generatePermalink, generateImage, mdToHtml } = require('../helpers/Helper')
 const moment = require('moment')
 
 class Controller {
@@ -52,9 +52,13 @@ class Controller {
         if (findImage && findImage.length > 0) {
             data.thumbnail = findImage[0].replace(/!\[.*]\(/, '').slice(0, -1)
         } else {
-            data.thumbnail = 'https://via.placeholder.com/85?Text=No+Image'
+            data.thumbnail = await generateImage(85)
         }
+
+        const [html, snippet] = mdToHtml(data.body, req.blog.hostname)
         Object.assign(data, {
+            html,
+            snippet,
             published_at,
             created_by: req.user.id,
             updated_by: req.user.id
@@ -105,10 +109,17 @@ class Controller {
                 data.thumbnail = thumbnail
             }
         } else {
-            data.thumbnail = 'https://via.placeholder.com/85'
+            data.thumbnail = await generateImage(85)
         }
+        if (!data.permalink) {
+            data.permalink = generatePermalink(data.title)
+        }
+        const [html, snippet] = mdToHtml(data.body, req.blog.hostname)
 
-        Object.assign(detail, data)
+        Object.assign(detail, data, {
+            html,
+            snippet
+        })
         await detail.save()
 
         return res.json({

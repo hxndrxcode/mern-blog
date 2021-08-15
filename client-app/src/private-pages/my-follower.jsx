@@ -1,10 +1,9 @@
-import axios from "axios"
 import React, { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { RootContext } from "../context/rootContext"
 import PageHeader from "../partials/page-header"
 import * as Icon from "react-feather"
-import { handleApiError } from "../helper/Api"
+import { Api, handleApiError } from "../helper/Api"
 import MyBlogMenu from "../partials/my-blog-menu"
 
 const MyFollower = props => {
@@ -19,12 +18,12 @@ const MyFollower = props => {
   })
 
   const fetchData = () => {
-    axios.get(`${store.apiUrl}/myfollower?blog_id=${state.blogId}&search=${state.search}`, store.authHeader)
+    Api.get(`myfollower?blog_id=${state.blogId}&search=${state.search}`, store.authHeader)
       .then(({ data }) => {
         setState({
           ...state,
-          listData: data.data.followers,
-          blogData: data.data.blog
+          listData: data.followers,
+          blogData: data.blog
         })
       })
       .catch(e => handleApiError(e, store, dispatch))

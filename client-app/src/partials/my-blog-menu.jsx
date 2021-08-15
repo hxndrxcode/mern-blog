@@ -7,7 +7,8 @@ const MyBlogMenu = props => {
         { path: 'comment', text: 'Comment' },
         { path: 'page', text: 'Page' },
         { path: 'follower', text: 'Follower' },
-        { path: 'setting', text: 'Setting' }
+        { path: 'layout', text: 'Layout' },
+        { path: 'setting', text: 'Setting' },
     ]
     let activeIndex = linkList.findIndex(v => v.path === props.path)
     return (

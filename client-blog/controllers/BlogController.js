@@ -7,6 +7,7 @@ class Controller {
         })
         .sort({ created_at: -1 })
         return res.render('home', {
+            title: req.blog.title + ' - ' + req.blog.tagline,
             posts,
             isHome: true
         })
@@ -20,6 +21,7 @@ class Controller {
             return res.status(404).send('Not Found!')
         }
         return res.render('post', {
+            title: post.title + ' - ' + req.blog.title,
             post
         })
     }

@@ -5,12 +5,24 @@ class Middleware {
         let hostname = req.protocol + '://' + req.hostname
         let blog = await Blog.findOne({
             hostname
-        })
+        }).lean()
         if (!blog) {
             return res.send('Not Found!!!')
         }
+        blog.navbarLink = []
+        for (let i in blog.navbar) {
+            if (blog.navbar[i].indexOf('label::') === 0) {
+                let label = blog.navbar[i].replace('label::', '')
+                blog.navbarLink[i] = {
+                    url: '/label/' + label,
+                    title: label
+                }
+            }
+        }
+
         req.app.locals.blog = blog
         req.app.locals.isHome = false
+        req.app.locals.activeNavbar = '/'
         req.blog = blog
         next()
     }

@@ -5,139 +5,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-        svg {
-            width: 16px;
-            height: 16px;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        .navbar .container {
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .btn-light {
-            border: 1px solid #ccc;
-        }
-
-        .article-body h2 {
-            font-size: 1.53125rem;
-            border-bottom: 1px solid #eee;
-            padding: 1rem 0 8px;
-            margin: 0 0 1rem;
-            line-height: 1.4;
-        }
-
-        .article-body h3,
-        .article-body h4 {
-            font-size: 1.25rem;
-            margin: 0 0 1rem;
-            padding-top: .5rem;
-            line-height: 1.35;
-        }
-
-        .article-body h4 {
-            font-size: 1.1rem;
-        }
-
-        .article-body ul,
-        .article-body ol {
-            padding-left: 2rem
-        }
-
-        .article-body img {
-            max-width: 95%;
-            max-height: 300px;
-            border: 10px solid #eeeeee;
-            display: block;
-            margin: auto;
-        }
-
-        .header-anchor {
-            margin-left: 3px;
-            color: #dfe3e8;
-        }
-
-        code {
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: #f4f5f6;
-            color: #454f5b;
-        }
-
-        blockquote {
-            padding: 0 1em;
-            color: #6a737d;
-            border-left: .25em solid #dfe2e5;
-        }
-
-        @media (min-width: 576px) {
-            .navbar .container {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 720px;
-            }
-        }
-    </style>
+    <title>[?= title ?]</title>
+    <link rel="shortcut icon" href="[?= blog.logo ?]" type="image/png">
+    <link rel="stylesheet" href="/default.css">
 </head>
 
 <body>
-    <header class="container pt-3 mb-3">
-        <div class="d-block d-sm-flex">
-            <div class="mr-3 mb-3 mb-sm-0">
-                <img src="https://img.vosy.net/file/20210810/6xsTokK0Kev9dvXxl6Xho.png" alt="" class="d-block mx-auto">
+    <header>
+        <div class="wrapper">
+            <div class="logo-wrapper">
+                <img src="[?= blog.logo ?]" alt="" class="logo">
             </div>
-            <div class="text-center text-sm-left">
-                <h2 class="mb-1 h3">
-                    <%= blog.title %>
+            <div class="blog-title-wrapper">
+                <h2 class="blog-title">
+                    [?= blog.title ?]
                 </h2>
-                <p class="mb-1">
-                    <%= blog.tagline %>
+                <p class="blog-tagline">
+                    [?= blog.tagline ?]
                 </p>
-                <% if (isHome) { %>
-                    <p class="text-muted mb-2">
-                        <span>
-                            <%= blog.post_count %> posts
-                        </span> &middot;
-                        <span>
-                            <%= blog.follower_count %> followers
-                        </span>
-                    </p>
-                    <button class="btn btn-light btn-sm">Follow</button>
-                    <% } %>
+                [? if (isHome) { ?]
+                <div class="blog-meta-wrapper">
+                    <span class="meta-post-count">
+                        [?= blog.post_count ?] posts
+                    </span> &middot;
+                    <span class="meta-follower-count">
+                        [?= blog.follower_count ?] followers
+                    </span>
+                </div>
+                <div class="btn-follow-wrapper">
+                    <button class="btn-follow">Follow</button>
+                </div>
+                [? } ?]
             </div>
         </div>
+        <nav class="navbar">
+            <button class="btn-navbar-toggle" type="button">
+                Menu
+            </button>
+            <div class="navbar-menu-wrapper">
+                <div class="navbar-menu">
+                    <a class="navbar-link [?= isHome ? 'active' : '' ?]" href="/">Home</a>
+                    [? for (let n of blog.navbarLink) { ?]
+                    <a class="navbar-link [?= n.url === activeNavbar ? 'active' : '' ?]" href="[?= n.url ?]">
+                        [?= n.title ?]
+                    </a>
+                    [? } ?]
+                </div>
+            </div>
+        </nav>
     </header>
-    <nav class="navbar navbar-expand-md navbar-light bg-light container mb-4">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="#">Features</a>
-                <a class="nav-item nav-link" href="#">Pricing</a>
-                <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </div>
-        </div>
-    </nav>
-    <main class="container">
-        <%- body %>
+    <main>
+        [?- body ?]
     </main>
 </body>
 

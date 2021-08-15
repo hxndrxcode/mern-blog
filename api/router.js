@@ -1,4 +1,6 @@
 const express = require('express')
+const multer = require('multer')
+const upload = multer({dest: 'public/tmp'})
 const router = express.Router()
 const { errorHandler, handledBy, loggedIn, extender, checkAsset } = require('./helpers/Middleware.js')
 
@@ -11,10 +13,14 @@ const Post = require('./controllers/PostController.js')
 const Page = require('./controllers/PageController.js')
 const Comment = require('./controllers/CommentController.js')
 const Follow = require('./controllers/FollowController.js')
+const Misc = require('./controllers/MiscController.js')
 
 
+router.post('/misc/upload', upload.single('image'), handledBy(Misc.upload))
 router.post('/auth/login', handledBy(Auth.login))
 router.post('/auth/register', handledBy(Auth.register))
+router.get('/auth/oauthgoogle', handledBy(Auth.getOauthGoogle))
+router.get('/auth/oauthgoogle/handler', handledBy(Auth.oauthGoogleHandler))
 
 router.get('/postfeed', handledBy(Post.postFeed))
 router.get('/postbyblog/:id', handledBy(Post.postByBlog))

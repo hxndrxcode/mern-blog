@@ -20,7 +20,7 @@ class Controller {
             }
         }
 
-        let data = await Follow.find(query)
+        let data = await Follow.find(query).lean()
         let users = await User.find({
             _id: {
                 $in: data.map(v => v.user_id)

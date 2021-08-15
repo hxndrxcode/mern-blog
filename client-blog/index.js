@@ -12,6 +12,13 @@ const DB = mongoose.connection
 DB.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.set('view engine', 'ejs')
+app.set('view options', {
+    openDelimiter: '[',
+    closeDelimiter: ']',
+    delimiter: '?'
+})
+
+app.use(express.static('./public'))
 app.use(expressLayouts)
 app.use('/', require('./router'))
 

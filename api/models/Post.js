@@ -6,6 +6,8 @@ const Model = new Schema({
   title: String,
   permalink: String,
   body: String,
+  html: String,
+  snippet: String,
   thumbnail: String,
   is_published: { type: Boolean, default: true },
   is_deleted: { type: Boolean, default: false },
