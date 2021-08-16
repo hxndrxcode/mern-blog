@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { RootContext } from "../context/rootContext"
 import PageHeader from "../partials/page-header"
 import * as Icon from "react-feather"
@@ -28,19 +28,6 @@ const MyFollower = props => {
       })
       .catch(e => handleApiError(e, store, dispatch))
   }
-
-//   const toggleItem = e => {
-//     let data = {
-//       blog_id: state.blogId,
-//       action: e.target.dataset.action,
-//       checked: [e.target.dataset.id]
-//     }
-//     axios.post(`${store.apiUrl}/myfollower/bulkaction`, data, store.authHeader)
-//       .then(res => {
-//         fetchData()
-//       })
-//       .catch(e => handleApiError(e, store, dispatch))
-//   }
 
   const keySearch = e => {
     if (e.code !== 'Enter') return false;
@@ -72,9 +59,15 @@ const MyFollower = props => {
               </div>
               <div className="ml-3">
                 <p className="mb-2">{v.user.username} ({v.user.fullname})</p>
-                <button type="button" className="btn btn-sm btn-light">
+                <Link to={{
+                    pathname: '/author/' + v.user.username,
+                    state: {
+                      from: '/my-blog/' + blogId + '/follower',
+                      fromTitle: 'My Folower'
+                    }
+                  }} className="btn btn-sm btn-light">
                   <Icon.Eye /> View
-                </button>
+                </Link>
               </div>
             </div>
           </div>

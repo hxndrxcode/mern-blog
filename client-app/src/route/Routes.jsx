@@ -24,6 +24,8 @@ import BlogView from '../public-pages/blog-view';
 import Trending from '../public-pages/trending';
 import MyLayout from '../private-pages/my-layout';
 import AuthOauthProvider from '../public-pages/auth-oauth-provider';
+import Authors from '../public-pages/authors';
+import AuthorDetail from '../public-pages/author-detail';
 
 const Routes = props => {
   return (
@@ -38,6 +40,8 @@ const Routes = props => {
         <Route exact path="/trending" component={Trending} />
         <Route exact path="/blogs" component={Blogs} />
         <Route exact path="/blog/:blogId" component={BlogView} />
+        <Route exact path="/authors" component={Authors} />
+        <Route exact path="/author/:username" component={AuthorDetail} />
 
         <PrivateRoute exact path="/my-blog" component={MyBlog} />
         <PrivateRoute exact path="/my-blog/create" component={MyBlogCreate} />

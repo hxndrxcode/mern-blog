@@ -21,6 +21,23 @@ class Controller {
             success: true
         })
     }
+
+    async authorList(req, res) {
+        let find = {}
+        let authors = await User.find(find).sort({ blog_count: -1 })
+        return res.json({
+            authors
+        })
+    }
+
+    async authorDetail(req, res) {
+        let user = await User.findOne({
+            username: req.params.username
+        })
+        return res.json({
+            user
+        })
+    }
 }
 
 module.exports = new Controller()

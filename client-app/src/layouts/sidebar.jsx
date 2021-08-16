@@ -31,7 +31,7 @@ const Sidebar = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/users" exact={true} className="nav-link">
+                <NavLink to="/authors" exact={true} className="nav-link">
                   <Icon.UserCheck className="mr-3" />
                   Authors
                 </NavLink>

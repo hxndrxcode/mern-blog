@@ -26,6 +26,8 @@ router.get('/postfeed', handledBy(Post.postFeed))
 router.get('/postbyblog/:id', handledBy(Post.postByBlog))
 router.get('/exploreblog', handledBy(Blog.exploreBlog))
 router.get('/exploreblog/:id', handledBy(Blog.exploreblogDetail))
+router.get('/author', handledBy(User.authorList))
+router.get('/author/:username', handledBy(User.authorDetail))
 
 router.use(loggedIn)
 
