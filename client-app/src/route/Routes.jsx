@@ -26,6 +26,7 @@ import MyLayout from '../private-pages/my-layout';
 import AuthOauthProvider from '../public-pages/auth-oauth-provider';
 import Authors from '../public-pages/authors';
 import AuthorDetail from '../public-pages/author-detail';
+import MyBlogOverview from '../private-pages/my-blog-overview';
 
 const Routes = props => {
   return (
@@ -45,8 +46,8 @@ const Routes = props => {
 
         <PrivateRoute exact path="/my-blog" component={MyBlog} />
         <PrivateRoute exact path="/my-blog/create" component={MyBlogCreate} />
+        <PrivateRoute exact path="/my-blog/:blogId" component={MyBlogOverview} />
         <PrivateRoute exact path="/my-blog/:blogId/setting" component={MyBlogSetting} />
-        <Redirect exact from="/my-blog/:blogId" to="/my-blog/:blogId/post" />
 
         <PrivateRoute exact path="/my-blog/:blogId/post" component={MyPost} />
         <PrivateRoute exact path="/my-blog/:blogId/post/create" component={MyPostCreate} />

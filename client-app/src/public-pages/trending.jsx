@@ -15,11 +15,11 @@ const Trending = props => {
     if (!store.authuser) {
       return false
     }
-    Api.get('postfeed', store.authHeader)
+    Api.get('posttrend', store.authHeader)
       .then(res => {
         setState({
           ...state,
-          listData: res.data.data
+          listData: res.data.posts
         })
       })
       .catch(e => handleApiError(e, store, dispatch))

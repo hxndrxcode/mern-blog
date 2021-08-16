@@ -162,6 +162,12 @@ class Controller {
         })
     }
 
+    async postTrend(req, res) {
+        return res.json({
+            posts: []
+        })
+    }
+
     async postByBlog(req, res) {
         let data = await Post.find({
             is_published: true,

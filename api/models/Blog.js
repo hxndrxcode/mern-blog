@@ -15,7 +15,8 @@ const Model = new Schema({
     meta_tags: Array,
     labels: Array,
     custom_style: Object,
-    navbar: Array
+    navbar: Array,
+    dashboard: Object
 }, {
     timestamps: {
         createdAt: 'created_at',

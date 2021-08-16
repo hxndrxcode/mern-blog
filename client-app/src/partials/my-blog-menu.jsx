@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 const MyBlogMenu = props => {
     const linkList = [
+        { path: 'overview', text: 'Overview' },
         { path: 'post', text: 'Post' },
         { path: 'comment', text: 'Comment' },
         { path: 'page', text: 'Page' },
@@ -19,8 +20,9 @@ const MyBlogMenu = props => {
                 </span>
                 <div className="dropdown-menu dropdown-menu-right">
                     {linkList.map(v => {
+                        let path = (v.path === 'overview' ? '' : '/' + v.path)
                         return (
-                            <Link to={`/my-blog/${props.blogId}/${v.path}`}
+                            <Link to={`/my-blog/${props.blogId + path}`}
                                 className={'dropdown-item ' + ((v.path === props.path) && 'bg-info text-white')}
                                 key={v.path}>
                                 {v.text}

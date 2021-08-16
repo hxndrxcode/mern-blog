@@ -23,6 +23,7 @@ router.get('/auth/oauthgoogle', handledBy(Auth.getOauthGoogle))
 router.get('/auth/oauthgoogle/handler', handledBy(Auth.oauthGoogleHandler))
 
 router.get('/postfeed', handledBy(Post.postFeed))
+router.get('/posttrend', handledBy(Post.postTrend))
 router.get('/postbyblog/:id', handledBy(Post.postByBlog))
 router.get('/exploreblog', handledBy(Blog.exploreBlog))
 router.get('/exploreblog/:id', handledBy(Blog.exploreblogDetail))
