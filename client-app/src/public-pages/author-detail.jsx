@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import PageHeader from "../partials/page-header";
 import { RootContext } from "../context/rootContext";
-import axios from "axios";
 import { Api, handleApiError } from "../helper/Api";
 import BlogItem from "../partials/blog-item";
 import { useParams } from "react-router-dom";
@@ -29,7 +28,10 @@ const AuthorDetail = props => {
   }
 
   const fetchBlog = () => {
-    axios.get(store.apiUrl + '/exploreblog?show=' + state.show, store.authHeader)
+    if (!user._id) {
+      return false
+    }
+    Api.get('exploreblog?user_id=' + user._id, store.authHeader)
       .then(res => {
         setState({
           ...state,
@@ -63,9 +65,13 @@ const AuthorDetail = props => {
 
   useEffect(() => {
     fetchUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     fetchBlog()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.show, state.update])
+  }, [state.show, state.update, user])
 
   return (
     <React.Fragment>

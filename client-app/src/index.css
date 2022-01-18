@@ -19,6 +19,15 @@ svg {
 .btn-light {
     border: 1px solid #ccc;
 }
+.sidebar-backdrop {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
 @media (min-width: 576px) { 
     .navbar .container {
         padding-left: 15px;

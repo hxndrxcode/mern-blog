@@ -10,7 +10,10 @@ const Sidebar = () => {
     <React.Fragment>
       <div data-toggle="collapse" data-target="#sidebar" className="sidebar-wrapper">
         <div className="collapse navbar-collapse mb-4" id="sidebar">
-          <nav className="navbar navbar-light bg-light border">
+          <div data-toggle="collapse" data-target="#sidebar" className="sidebar-backdrop d-md-none">
+            &nbsp;
+          </div>
+          <nav className="navbar navbar-light bg-light border" style={{ zIndex: 3, width: '200px' }}>
             <ul className="navbar-nav w-100">
               <li className="nav-item">
                 <NavLink to="/" exact={true} className="nav-link">
@@ -68,10 +71,6 @@ const Sidebar = () => {
                   Go to {store.lpSiteName}
                 </a>
               </li>
-              <div className="dropdown-divider d-lg-none"></div>
-            <span className="mx-auto d-lg-none btn border bg-white btn-sm">
-              <Icon.ArrowUp /> Close
-            </span>
             </ul>
           </nav>
         </div>

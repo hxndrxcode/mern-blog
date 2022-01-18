@@ -8,7 +8,7 @@ const Header = () => {
   let { store } = useContext(RootContext)
 
   return (
-    <nav className="navbar fixed-top navbar-light bg-light border-bottom">
+    <nav className="navbar fixed-top navbar-light bg-light border-bottom" style={{zIndex: 1}}>
       <div className="container">
         <span className="mr-3 d-lg-none" type="button" data-toggle="collapse" data-target="#sidebar">
           <Icon.Menu />

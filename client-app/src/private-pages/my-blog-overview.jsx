@@ -51,7 +51,7 @@ const MyBlogOverview = props => {
             </p>
             <h1 className="mb-0">
               {state.blogData.dashboard.post_published_count}
-              <span className="text-muted"> / {state.blogData.post_count}</span>
+              <span className="text-muted small"> / {state.blogData.post_count}</span>
             </h1>
           </div>
         </div>
@@ -65,7 +65,7 @@ const MyBlogOverview = props => {
             </p>
             <h1 className="mb-0">
               {state.blogData.dashboard.comment_unread_count}
-              <span className="text-muted"> / {state.blogData.dashboard.comment_count}</span>
+              <span className="text-muted small"> / {state.blogData.dashboard.comment_count}</span>
             </h1>
           </div>
         </div>

@@ -27,13 +27,14 @@ const AuthLoginOauth = () => {
     <React.Fragment>
       <PageHeader title="Login" />
       <div className="card">
-        <div className="col-md-6 offset-md-3 px-0">
-          <div className="card-body">
-            <button onClick={loginUrl} className="btn btn-info">
-              <Icon.LogIn />
-              Login with Google
-            </button>
-          </div>
+        <div className="card-body text-center py-4">
+          <p>
+            Login with your Google Account for secure and seamless experience
+          </p>
+          <button onClick={loginUrl} className="btn btn-info">
+            <Icon.LogIn />
+            Login with Google
+          </button>
         </div>
       </div>
     </React.Fragment>
